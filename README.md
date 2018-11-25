@@ -1,5 +1,3 @@
-# 🚧 THIS IS [WORK IN PROGRESS](https://github.com/octokit/graphql.js)
-
 # graphql.js
 
 > GitHub GraphQL API client for browsers and Node
