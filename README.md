@@ -96,6 +96,28 @@ const { data } = await graphql({
 })
 ```
 
+Use with GitHub Enterprise
+
+```js
+const graphql = require('@octokit/graphql').defaults({
+  baseUrl: 'https://github-enterprise.acme-inc.com/api',
+  headers: {
+    authorization: `token secret123`
+  }
+})
+const { data } = await graphql(`{
+  repository(owner:"acme-project", name:"acme-repo") {
+    issues(last:3) {
+      edges {
+        node {
+          title
+        }
+      }
+    }
+  }
+}`)
+```
+
 ## License
 
 [MIT](LICENSE)
