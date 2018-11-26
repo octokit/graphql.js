@@ -3,7 +3,7 @@
 > GitHub GraphQL API client for browsers and Node
 
 [![@latest](https://img.shields.io/npm/v/@octokit/graphql.svg)](https://www.npmjs.com/package/@octokit/graphql)
-[![Build Status](https://travis-ci.org/octokit/graphql.js.svg?branch=master)](https://travis-ci.org/octokit/graphql.js)
+[![Build Status](https://travis-ci.com/octokit/graphql.js.svg?branch=master)](https://travis-ci.com/octokit/graphql.js)
 [![Coverage Status](https://coveralls.io/repos/github/octokit/graphql.js/badge.svg)](https://coveralls.io/github/octokit/graphql.js)
 [![Greenkeeper](https://badges.greenkeeper.io/octokit/graphql.js.svg)](https://greenkeeper.io/)
 
