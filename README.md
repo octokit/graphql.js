@@ -121,6 +121,42 @@ const { data } = await graphql(`{
 }`)
 ```
 
+## Errors
+
+In case of a GraphQL error, `error.message` is set to the first error from the response’s `errors` array. All errors can be accessed at `error.errors`. `error.request` has the request options such as query, variables and headers set for easier debugging.
+
+```js
+const graphql = require('@octokit/graphql').defaults({
+  headers: {
+    authorization: `token secret123`
+  }
+})
+const query = `{
+  viewer {
+    bioHtml
+  }
+}`
+
+try {
+  const { data } = await graphql(query)
+} catch (error) {
+  // server responds with
+  // {
+  // 	"data": null,
+  // 	"errors": [{
+  // 		"message": "Field 'bioHtml' doesn't exist on type 'User'",
+  // 		"locations": [{
+  // 			"line": 3,
+  // 			"column": 5
+  // 		}]
+  // 	}]
+  // }
+
+  console.log('Request failed:', error.request) // { query, variables: {}, headers: { authorization: 'token secret123' } }
+  console.log(error.message) // Field 'bioHtml' doesn't exist on type 'User'
+}
+```
+
 ## License
 
 [MIT](LICENSE)
