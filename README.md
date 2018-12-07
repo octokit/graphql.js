@@ -30,7 +30,7 @@ const { data } = await graphql(`{
 })
 ```
 
-Send a query with variables
+⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
 
 ```js
 const graphql = require('@octokit/graphql')
