@@ -13,7 +13,7 @@ Send a simple query
 
 ```js
 const graphql = require('@octokit/graphql')
-const { data } = await graphql(`{
+const { repository } = await graphql(`{
   repository(owner:"octokit", name:"graphql.js") {
     issues(last:3) {
       edges {
@@ -34,7 +34,7 @@ const { data } = await graphql(`{
 
 ```js
 const graphql = require('@octokit/graphql')
-const { data } = await graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
       issues(last:$num) {
         edges {
@@ -62,7 +62,7 @@ const graphql = require('@octokit/graphql').defaults({
     authorization: `token secret123`
   }
 })
-const { data } = await graphql(`{
+const { repository } = await graphql(`{
   repository(owner:"octokit", name:"graphql.js") {
     issues(last:3) {
       edges {
@@ -79,7 +79,7 @@ Pass query together with headers and variables
 
 ```js
 const graphql = require('@octokit/graphql')
-const { data } = await graphql({
+const { lastIssues } = await graphql({
   query: `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
       issues(last:$num) {
@@ -108,7 +108,7 @@ const graphql = require('@octokit/graphql').defaults({
     authorization: `token secret123`
   }
 })
-const { data } = await graphql(`{
+const { repository } = await graphql(`{
   repository(owner:"acme-project", name:"acme-repo") {
     issues(last:3) {
       edges {
@@ -138,7 +138,7 @@ const query = `{
 }`
 
 try {
-  const { data } = await graphql(query)
+  const result = await graphql(query)
 } catch (error) {
   // server responds with
   // {
