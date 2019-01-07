@@ -59,8 +59,8 @@ describe('graphql.defaults()', () => {
         }
       }
     }`)
-      .then(response => {
-        expect(response.data).to.deep.equal(mockData)
+      .then(result => {
+        expect(result).to.deep.equal(mockData)
       })
   })
 
@@ -115,8 +115,8 @@ describe('graphql.defaults()', () => {
         }
       }
     }`)
-      .then(response => {
-        expect(response.data).to.deep.equal(mockData)
+      .then(result => {
+        expect(result).to.deep.equal(mockData)
       })
   })
 })

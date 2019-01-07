@@ -41,7 +41,7 @@ describe('errors', () => {
       }
     })
 
-      .then(response => {
+      .then(result => {
         throw new Error('Should not resolve')
       })
 
