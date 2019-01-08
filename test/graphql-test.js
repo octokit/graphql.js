@@ -142,4 +142,23 @@ describe('graphql()', () => {
       repo: 'graphql.js'
     })
   })
+
+  it('Don’t send empty variables object', () => {
+    const query = '{ viewer { login } }'
+
+    mockable.fetch = fetchMock.sandbox()
+      .post('https://api.github.com/graphql', (url, options) => {
+        const body = JSON.parse(options.body)
+        expect(body.query).to.equal(query)
+        expect(body.variables).to.equal(undefined)
+
+        return { data: {} }
+      })
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`
+      }
+    })
+  })
 })
