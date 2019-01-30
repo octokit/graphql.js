@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "GitHub GraphQL API client for browsers and Node",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "prebuild": "mkdirp dist/",
     "build": "npm-run-all build:*",
