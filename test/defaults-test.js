@@ -2,7 +2,6 @@ const chai = require('chai')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
-const mockable = require('@octokit/request/lib/fetch')
 
 const expect = chai.expect
 
@@ -36,16 +35,17 @@ describe('graphql.defaults()', () => {
       }
     }
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', { data: mockData }, {
-        headers: {
-          authorization: 'token secret123'
-        }
-      })
-
     const authenticatedGraphql = graphql.defaults({
       headers: {
         authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', { data: mockData }, {
+            headers: {
+              authorization: 'token secret123'
+            }
+          })
       }
     })
     return authenticatedGraphql(`{
@@ -89,16 +89,17 @@ describe('graphql.defaults()', () => {
       }
     }
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://github.acme-inc.com/api/graphql', { data: mockData }, {
-        headers: {
-          authorization: 'token secret123'
-        }
-      })
-
     const authenticatedGraphql = graphql.defaults({
       headers: {
         authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://github.acme-inc.com/api/graphql', { data: mockData }, {
+            headers: {
+              authorization: 'token secret123'
+            }
+          })
       }
     })
     const acmeGraphql = authenticatedGraphql.defaults({

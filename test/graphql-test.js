@@ -3,18 +3,13 @@ const getUserAgent = require('universal-user-agent')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
-const mockable = require('@octokit/request/lib/fetch')
 
 const expect = chai.expect
-const originalFetch = mockable.fetch
 
 const pkg = require('../package.json')
 const userAgent = `octokit-graphql.js/${pkg.version} ${getUserAgent()}`
 
 describe('graphql()', () => {
-  afterEach(() => {
-    mockable.fetch = originalFetch
-  })
   it('is a function', () => {
     expect(graphql).to.be.a('function')
   })
@@ -44,15 +39,6 @@ describe('graphql()', () => {
       }
     }
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', { data: mockData }, {
-        headers: {
-          accept: 'application/vnd.github.v3+json',
-          authorization: 'token secret123',
-          'user-agent': userAgent
-        }
-      })
-
     return graphql(`{
       repository(owner:"octokit", name:"graphql.js") {
         issues(last:3) {
@@ -66,6 +52,16 @@ describe('graphql()', () => {
     }`, {
       headers: {
         authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', { data: mockData }, {
+            headers: {
+              accept: 'application/vnd.github.v3+json',
+              authorization: 'token secret123',
+              'user-agent': userAgent
+            }
+          })
       }
     })
 
@@ -87,24 +83,25 @@ describe('graphql()', () => {
       }
     }`
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', (url, options) => {
-        const body = JSON.parse(options.body)
-        expect(body.query).to.equal(query)
-        expect(body.variables).to.deep.equal({
-          owner: 'octokit',
-          repo: 'graphql.js'
-        })
-
-        return { data: {} }
-      })
-
     return graphql(query, {
       headers: {
         authorization: `token secret123`
       },
       owner: 'octokit',
-      repo: 'graphql.js'
+      repo: 'graphql.js',
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', (url, options) => {
+            const body = JSON.parse(options.body)
+            expect(body.query).to.equal(query)
+            expect(body.variables).to.deep.equal({
+              owner: 'octokit',
+              repo: 'graphql.js'
+            })
+
+            return { data: {} }
+          })
+      }
     })
   })
 
@@ -121,43 +118,45 @@ describe('graphql()', () => {
       }
     }`
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', (url, options) => {
-        const body = JSON.parse(options.body)
-        expect(body.query).to.equal(query)
-        expect(body.variables).to.deep.equal({
-          owner: 'octokit',
-          repo: 'graphql.js'
-        })
-
-        return { data: {} }
-      })
-
     return graphql({
       query,
       headers: {
         authorization: `token secret123`
       },
       owner: 'octokit',
-      repo: 'graphql.js'
+      repo: 'graphql.js',
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', (url, options) => {
+            const body = JSON.parse(options.body)
+            expect(body.query).to.equal(query)
+            expect(body.variables).to.deep.equal({
+              owner: 'octokit',
+              repo: 'graphql.js'
+            })
+
+            return { data: {} }
+          })
+      }
     })
   })
 
   it('Don’t send empty variables object', () => {
     const query = '{ viewer { login } }'
 
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', (url, options) => {
-        const body = JSON.parse(options.body)
-        expect(body.query).to.equal(query)
-        expect(body.variables).to.equal(undefined)
-
-        return { data: {} }
-      })
-
     return graphql(query, {
       headers: {
         authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', (url, options) => {
+            const body = JSON.parse(options.body)
+            expect(body.query).to.equal(query)
+            expect(body.variables).to.equal(undefined)
+
+            return { data: {} }
+          })
       }
     })
   })
