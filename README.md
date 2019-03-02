@@ -9,6 +9,13 @@
 
 <!-- toc -->
 
+- [Usage](#usage)
+- [Errors](#errors)
+- [Writing tests](#writing-tests)
+- [License](#license)
+
+<!-- tocstop -->
+
 ## Usage
 
 Send a simple query
