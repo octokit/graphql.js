@@ -7,6 +7,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/octokit/graphql.js/badge.svg)](https://coveralls.io/github/octokit/graphql.js)
 [![Greenkeeper](https://badges.greenkeeper.io/octokit/graphql.js.svg)](https://greenkeeper.io/)
 
+<!-- toc -->
+
 ## Usage
 
 Send a simple query
