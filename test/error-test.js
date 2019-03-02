@@ -2,16 +2,10 @@ const chai = require('chai')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
-const mockable = require('@octokit/request/lib/fetch')
 
 const expect = chai.expect
-const originalFetch = mockable.fetch
 
 describe('errors', () => {
-  afterEach(() => {
-    mockable.fetch = originalFetch
-  })
-
   it('Invalid query', () => {
     const query = `{
   viewer {
@@ -32,12 +26,14 @@ describe('errors', () => {
         }
       ]
     }
-    mockable.fetch = fetchMock.sandbox()
-      .post('https://api.github.com/graphql', mockResponse)
 
     return graphql(query, {
       headers: {
         authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', mockResponse)
       }
     })
 
