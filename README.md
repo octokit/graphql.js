@@ -157,6 +157,31 @@ try {
 }
 ```
 
+## Writing tests
+
+You can pass a replacement for [the built-in fetch implementation](https://github.com/bitinn/node-fetch) as `request.fetch` option. For example, using [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/) works great to write tests
+
+```js
+const assert = require('assert')
+const fetchMock = require('fetch-mock/es5/server')
+
+const graphql = require('@octokit/graphql')
+
+graphql('{ viewer { login } }', {
+  headers: {
+    authorization: 'token secret123'
+  },
+  request: {
+    fetch: fetchMock.sandbox()
+      .post('https://api.github.com/graphql', (url, options) => {
+        assert.strictEqual(options.headers.authorization, 'token secret123')
+        assert.strictEqual(options.body, '{"query":"{ viewer { login } }"}', 'Sends correct query')
+        return { data: {} }
+      })
+  }
+})
+```
+
 ## License
 
 [MIT](LICENSE)
