@@ -47,4 +47,60 @@ describe('errors', () => {
         expect(error.request.query).to.equal(query)
       })
   })
+
+  it('Should throw an error for a partial response accompanied by errors', () => {
+    const query = `query getCommitsWithAssociatedPullRequests($name: String!, $owner: String!, $since: GitTimestamp, $after: String) {
+      repository(name: $name, owner: $owner) {
+        name
+        ref(qualifiedName: "master") {
+          target {
+            ... on Commit {
+              history(first: 25, since: $since, after: $after) {
+                nodes {
+                  message
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    `
+
+    const mockResponse = {
+      data: {
+        repository: {
+          name: 'probot',
+          ref: null
+        }
+      },
+      errors: [
+        {
+          type: 'INVALID_CURSOR_ARGUMENTS',
+          path: ['repository', 'ref', 'target', 'history'],
+          locations: [
+            {
+              line: 7,
+              column: 11
+            }
+          ],
+          message: '`abc` does not appear to be a valid cursor.'
+        }
+      ]
+    }
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox()
+          .post('https://api.github.com/graphql', mockResponse)
+      }
+    })
+
+      .then(result => {
+        throw new Error('Should not resolve')
+      })
+  })
 })
