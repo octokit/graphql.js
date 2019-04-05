@@ -49,13 +49,13 @@ describe('errors', () => {
   })
 
   it('Should throw an error for a partial response accompanied by errors', () => {
-    const query = `query getCommitsWithAssociatedPullRequests($name: String!, $owner: String!, $since: GitTimestamp, $after: String) {
-      repository(name: $name, owner: $owner) {
+    const query = `{
+      repository(name: "probot", owner: "probot") {
         name
         ref(qualifiedName: "master") {
           target {
             ... on Commit {
-              history(first: 25, since: $since, after: $after) {
+              history(first: 25, after: "invalid cursor") {
                 nodes {
                   message
                 }
@@ -64,8 +64,7 @@ describe('errors', () => {
           }
         }
       }
-    }
-    `
+    }`
 
     const mockResponse = {
       data: {
@@ -84,7 +83,7 @@ describe('errors', () => {
               column: 11
             }
           ],
-          message: '`abc` does not appear to be a valid cursor.'
+          message: '`invalid cursor` does not appear to be a valid cursor.'
         }
       ]
     }
@@ -102,7 +101,7 @@ describe('errors', () => {
       .then(result => {
         throw new Error('Should not resolve')
       }).catch(error => {
-        expect(error.message).to.equal('`abc` does not appear to be a valid cursor.')
+        expect(error.message).to.equal('`invalid cursor` does not appear to be a valid cursor.')
         expect(error.errors).to.deep.equal(mockResponse.errors)
         expect(error.request.query).to.equal(query)
         expect(error.data).to.deep.equal(mockResponse.data)
