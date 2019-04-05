@@ -166,6 +166,70 @@ try {
 }
 ```
 
+## Partial responses
+
+A GraphQL query may respond with partial data accompanied by errors. In this case we will throw an error but the partial data will still be accessible through `error.data`
+
+```js
+const graphql = require('@octokit/graphql').defaults({
+  headers: {
+    authorization: `token secret123`
+  }
+})
+const query = `{
+  repository(name: "probot", owner: "probot") {
+    name
+    ref(qualifiedName: "master") {
+      target {
+        ... on Commit {
+          history(first: 25, after: "invalid cursor") {
+            nodes {
+              message
+            }
+          }
+        }
+      }
+    }
+  }
+}`
+
+try {
+  const result = await graphql(query)
+} catch (error) {
+  // server responds with
+  // { 
+  //   "data": { 
+  //     "repository": { 
+  //       "name": "probot", 
+  //       "ref": null 
+  //     } 
+  //   }, 
+  //   "errors": [ 
+  //     { 
+  //       "type": "INVALID_CURSOR_ARGUMENTS", 
+  //       "path": [ 
+  //         "repository", 
+  //         "ref", 
+  //         "target", 
+  //         "history" 
+  //       ], 
+  //       "locations": [ 
+  //         { 
+  //           "line": 7, 
+  //           "column": 11 
+  //         } 
+  //       ], 
+  //       "message": "`invalid cursor` does not appear to be a valid cursor." 
+  //     } 
+  //   ] 
+  // } 
+
+  console.log('Request failed:', error.request) // { query, variables: {}, headers: { authorization: 'token secret123' } }
+  console.log(error.message) // `invalid cursor` does not appear to be a valid cursor.
+  console.log(error.data) // { repository: { name: 'probot', ref: null } }
+}
+```
+
 ## Writing tests
 
 You can pass a replacement for [the built-in fetch implementation](https://github.com/bitinn/node-fetch) as `request.fetch` option. For example, using [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/) works great to write tests
