@@ -101,6 +101,11 @@ describe('errors', () => {
 
       .then(result => {
         throw new Error('Should not resolve')
+      }).catch(error => {
+        expect(error.message).to.equal('`abc` does not appear to be a valid cursor.')
+        expect(error.errors).to.deep.equal(mockResponse.errors)
+        expect(error.request.query).to.equal(query)
+        expect(error.data).to.deep.equal(mockResponse.data)
       })
   })
 })
