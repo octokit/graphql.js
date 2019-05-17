@@ -1,9 +1,6 @@
-const chai = require('chai')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
-
-const expect = chai.expect
 
 describe('errors', () => {
   it('Invalid query', () => {
@@ -42,9 +39,9 @@ describe('errors', () => {
       })
 
       .catch(error => {
-        expect(error.message).to.equal('Field \'bioHtml\' doesn\'t exist on type \'User\'')
-        expect(error.errors).to.deep.equal(mockResponse.errors)
-        expect(error.request.query).to.equal(query)
+        expect(error.message).toEqual('Field \'bioHtml\' doesn\'t exist on type \'User\'')
+        expect(error.errors).toStrictEqual(mockResponse.errors)
+        expect(error.request.query).toEqual(query)
       })
   })
 
@@ -101,10 +98,10 @@ describe('errors', () => {
       .then(result => {
         throw new Error('Should not resolve')
       }).catch(error => {
-        expect(error.message).to.equal('`invalid cursor` does not appear to be a valid cursor.')
-        expect(error.errors).to.deep.equal(mockResponse.errors)
-        expect(error.request.query).to.equal(query)
-        expect(error.data).to.deep.equal(mockResponse.data)
+        expect(error.message).toEqual('`invalid cursor` does not appear to be a valid cursor.')
+        expect(error.errors).toStrictEqual(mockResponse.errors)
+        expect(error.request.query).toEqual(query)
+        expect(error.data).toStrictEqual(mockResponse.data)
       })
   })
 })

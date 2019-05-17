@@ -1,17 +1,14 @@
-const chai = require('chai')
 const getUserAgent = require('universal-user-agent')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
-
-const expect = chai.expect
 
 const pkg = require('../package.json')
 const userAgent = `octokit-graphql.js/${pkg.version} ${getUserAgent()}`
 
 describe('graphql()', () => {
   it('is a function', () => {
-    expect(graphql).to.be.a('function')
+    expect(graphql).toBeInstanceOf(Function)
   })
 
   it('README simple query example', () => {
@@ -66,7 +63,7 @@ describe('graphql()', () => {
     })
 
       .then(result => {
-        expect(result).to.deep.equal(mockData)
+        expect(result).toStrictEqual(mockData)
       })
   })
 
@@ -93,8 +90,8 @@ describe('graphql()', () => {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
             const body = JSON.parse(options.body)
-            expect(body.query).to.equal(query)
-            expect(body.variables).to.deep.equal({
+            expect(body.query).toEqual(query)
+            expect(body.variables).toStrictEqual({
               owner: 'octokit',
               repo: 'graphql.js'
             })
@@ -129,8 +126,8 @@ describe('graphql()', () => {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
             const body = JSON.parse(options.body)
-            expect(body.query).to.equal(query)
-            expect(body.variables).to.deep.equal({
+            expect(body.query).toEqual(query)
+            expect(body.variables).toStrictEqual({
               owner: 'octokit',
               repo: 'graphql.js'
             })
@@ -152,8 +149,8 @@ describe('graphql()', () => {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
             const body = JSON.parse(options.body)
-            expect(body.query).to.equal(query)
-            expect(body.variables).to.equal(undefined)
+            expect(body.query).toEqual(query)
+            expect(body.variables).toEqual(undefined)
 
             return { data: {} }
           })

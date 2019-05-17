@@ -1,13 +1,10 @@
-const chai = require('chai')
 const fetchMock = require('fetch-mock/es5/server')
 
 const graphql = require('..')
 
-const expect = chai.expect
-
 describe('graphql.defaults()', () => {
   it('is a function', () => {
-    expect(graphql.defaults).to.be.a('function')
+    expect(graphql.defaults).toBeInstanceOf(Function)
   })
 
   it('README example', () => {
@@ -60,7 +57,7 @@ describe('graphql.defaults()', () => {
       }
     }`)
       .then(result => {
-        expect(result).to.deep.equal(mockData)
+        expect(result).toStrictequal(mockData)
       })
   })
 
@@ -117,7 +114,7 @@ describe('graphql.defaults()', () => {
       }
     }`)
       .then(result => {
-        expect(result).to.deep.equal(mockData)
+        expect(result).toStrictEqual(mockData)
       })
   })
 })
