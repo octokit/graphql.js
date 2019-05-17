@@ -1,5 +1,7 @@
+import { RequestOptions } from '@octokit/request/dist-types/types'
+
 export default class GraphqlError extends Error {
-  constructor (request, response) {
+  constructor (request: RequestOptions, response) {
     const message = response.data.errors[0].message
     super(message)
 
