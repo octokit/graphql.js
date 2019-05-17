@@ -1,7 +1,9 @@
-import { RequestOptions } from '@octokit/request/dist-types/types'
+import { Endpoint } from '@octokit/endpoint/dist-types/types';
+import { AnyResponse } from '@octokit/request/dist-types/types'
 
 export default class GraphqlError extends Error {
-  constructor (request: RequestOptions, response) {
+  public request: Endpoint
+  constructor (request: Endpoint, response: AnyResponse) {
     const message = response.data.errors[0].message
     super(message)
 
