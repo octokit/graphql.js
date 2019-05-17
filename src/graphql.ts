@@ -1,5 +1,5 @@
 import { request as Request } from '@octokit/request'
-import { Endpoint, Parameters } from '@octokit/request/dist-types/types';
+import { Endpoint, Parameters } from '@octokit/request/dist-types/types'
 import GraphqlError from './error'
 import { GraphQlQueryResponse } from './types'
 
