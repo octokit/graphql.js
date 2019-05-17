@@ -4,7 +4,7 @@ import { AnyResponse } from '@octokit/request/dist-types/types'
 export default class GraphqlError extends Error {
   public request: Endpoint
   constructor (request: Endpoint, response: AnyResponse) {
-    const message = response.data.errors[0].message
+    const message = response.data ? response.data.errors[0].message : 'ERROR'
     super(message)
 
     Object.assign(this, response.data)
