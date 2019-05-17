@@ -15,8 +15,7 @@
     "coverage": "nyc report --reporter=html && open coverage/index.html",
     "coverage:upload": "nyc report --reporter=text-lcov | coveralls",
     "pretest": "standard",
-    "test": "nyc mocha test/*-test.js",
-    "test:browser": "cypress run --browser chrome"
+    "test": "nyc mocha test/*-test.js"
   },
   "repository": {
     "type": "git",
@@ -39,12 +38,10 @@
     "universal-user-agent": "^3.0.0"
   },
   "devDependencies": {
-    "@types/cypress": "^1.1.3",
     "@types/node": "^12.0.2",
     "chai": "^4.2.0",
     "compression-webpack-plugin": "^2.0.0",
     "coveralls": "^3.0.3",
-    "cypress": "^3.1.5",
     "fetch-mock": "^7.3.1",
     "mkdirp": "^0.5.1",
     "mocha": "^6.0.0",
