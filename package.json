@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/octokit/graphql.js#readme",
   "dependencies": {
-    "@octokit/request": "^3.0.0",
+    "@octokit/request": "^4.1.0",
     "universal-user-agent": "^2.0.3"
   },
   "devDependencies": {
