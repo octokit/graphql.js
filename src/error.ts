@@ -1,10 +1,10 @@
-import { OctokitResponse, request as Request, AnyResponse } from '@octokit/request/dist-types/types'
+import { OctokitResponse, request as Request } from '@octokit/request/dist-types/types'
 import { GraphQlQueryResponse } from './types'
 
-export default class GraphqlError extends Error {
+export default class GraphqlError<T extends GraphQlQueryResponse> extends Error {
   public request: Request
-  constructor (request: Request, response: AnyResponse) {
-    const message = response.data ? response.data.errors[0].message : 'ERROR'
+  constructor (request: Request, response: OctokitResponse<T>) {
+    const message = response.data ? response.data.errors![0].message : 'ERROR'
     super(message)
 
     Object.assign(this, response.data)

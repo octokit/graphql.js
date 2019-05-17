@@ -5,7 +5,7 @@ import { GraphQlQueryResponse } from './types'
 
 const NON_VARIABLE_OPTIONS = ['method', 'baseUrl', 'url', 'headers', 'request', 'query']
 
-export default function graphql (request: typeof Request, query: string | Endpoint, options?: Parameters) {
+export default function graphql<T extends GraphQlQueryResponse> (request: typeof Request, query: string | Endpoint, options?: Parameters) {
   options = typeof query === 'string'
     ? options = Object.assign({ query }, options)
     : options = query
@@ -24,10 +24,10 @@ export default function graphql (request: typeof Request, query: string | Endpoi
     return result
   }, {})
 
-  return request<GraphQlQueryResponse>(requestOptions)
+  return request<T>(requestOptions)
     .then(response => {
       if (response.data.errors) {
-        throw new GraphqlError(requestOptions, response)
+        throw new GraphqlError<T>(requestOptions, response)
       }
 
       return response
