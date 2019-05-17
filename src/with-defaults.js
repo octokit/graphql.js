@@ -1,8 +1,6 @@
-module.exports = withDefaults
+import graphql from './graphql'
 
-const graphql = require('./graphql')
-
-function withDefaults (request, newDefaults) {
+export default function withDefaults (request, newDefaults) {
   const newRequest = request.defaults(newDefaults)
   const newApi = function (query, options) {
     return graphql(newRequest, query, options)

@@ -1,10 +1,8 @@
-module.exports = graphql
-
-const GraphqlError = require('./error')
+import GraphqlError from './error'
 
 const NON_VARIABLE_OPTIONS = ['method', 'baseUrl', 'url', 'headers', 'request', 'query']
 
-function graphql (request, query, options) {
+export default function graphql (request, query, options) {
   if (typeof query === 'string') {
     options = Object.assign({ query }, options)
   } else {

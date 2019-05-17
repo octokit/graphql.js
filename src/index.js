@@ -1,12 +1,12 @@
-const { request } = require('@octokit/request')
-const getUserAgent = require('universal-user-agent')
+import { request } from '@octokit/request'
+import getUserAgent from 'universal-user-agent'
 
-const version = require('./package.json').version
+import { version } from './package.json'
 const userAgent = `octokit-graphql.js/${version} ${getUserAgent()}`
 
-const withDefaults = require('./lib/with-defaults')
+import withDefaults from './lib/with-defaults'
 
-module.exports = withDefaults(request, {
+export default withDefaults(request, {
   method: 'POST',
   url: '/graphql',
   headers: {

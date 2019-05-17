@@ -1,4 +1,4 @@
-module.exports = class GraphqlError extends Error {
+export default class GraphqlError extends Error {
   constructor (request, response) {
     const message = response.data.errors[0].message
     super(message)
