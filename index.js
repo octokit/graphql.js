@@ -1,4 +1,4 @@
-const request = require('@octokit/request')
+const { request } = require('@octokit/request')
 const getUserAgent = require('universal-user-agent')
 
 const version = require('./package.json').version
