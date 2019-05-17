@@ -1,9 +1,9 @@
-import { Endpoint } from '@octokit/endpoint/dist-types/types';
-import { AnyResponse } from '@octokit/request/dist-types/types'
+import { OctokitResponse, request as Request, AnyResponse } from '@octokit/request/dist-types/types'
+import { GraphQlQueryResponse } from './types'
 
 export default class GraphqlError extends Error {
-  public request: Endpoint
-  constructor (request: Endpoint, response: AnyResponse) {
+  public request: Request
+  constructor (request: Request, response: AnyResponse) {
     const message = response.data ? response.data.errors[0].message : 'ERROR'
     super(message)
 
