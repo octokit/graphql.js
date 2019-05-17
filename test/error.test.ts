@@ -13,13 +13,13 @@ describe('errors', () => {
       data: null,
       errors: [
         {
-          message: 'Field \'bioHtml\' doesn\'t exist on type \'User\'',
           locations: [
             {
-              line: 3,
-              column: 5
+              column: 5,
+              line: 3
             }
-          ]
+          ],
+          message: 'Field \'bioHtml\' doesn\'t exist on type \'User\''
         }
       ]
     }
@@ -72,15 +72,15 @@ describe('errors', () => {
       },
       errors: [
         {
-          type: 'INVALID_CURSOR_ARGUMENTS',
-          path: ['repository', 'ref', 'target', 'history'],
           locations: [
             {
-              line: 7,
-              column: 11
+              column: 11,
+              line: 7
             }
           ],
-          message: '`invalid cursor` does not appear to be a valid cursor.'
+          message: '`invalid cursor` does not appear to be a valid cursor.',
+          path: ['repository', 'ref', 'target', 'history'],
+          type: 'INVALID_CURSOR_ARGUMENTS'
         }
       ]
     }

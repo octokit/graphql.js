@@ -89,7 +89,7 @@ describe('graphql()', () => {
       request: {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
-            const body = JSON.parse(options.body)
+            const body = JSON.parse(options.body.toString())
             expect(body.query).toEqual(query)
             expect(body.variables).toStrictEqual({
               owner: 'octokit',
@@ -116,16 +116,18 @@ describe('graphql()', () => {
     }`
 
     return graphql({
-      query,
+      method: 'POST',
+      url: '/',
       headers: {
         authorization: `token secret123`
       },
       owner: 'octokit',
+      query,
       repo: 'graphql.js',
       request: {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
-            const body = JSON.parse(options.body)
+            const body = JSON.parse(options.body.toString())
             expect(body.query).toEqual(query)
             expect(body.variables).toStrictEqual({
               owner: 'octokit',
@@ -148,7 +150,7 @@ describe('graphql()', () => {
       request: {
         fetch: fetchMock.sandbox()
           .post('https://api.github.com/graphql', (url, options) => {
-            const body = JSON.parse(options.body)
+            const body = JSON.parse(options.body.toString())
             expect(body.query).toEqual(query)
             expect(body.variables).toEqual(undefined)
 
