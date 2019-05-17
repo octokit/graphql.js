@@ -1,6 +1,6 @@
-const fetchMock = require('fetch-mock/es5/server')
+import fetchMock from 'fetch-mock'
 
-const graphql = require('..')
+import graphql from '../src'
 
 describe('errors', () => {
   it('Invalid query', () => {

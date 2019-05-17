@@ -1,6 +1,6 @@
-const fetchMock = require('fetch-mock/es5/server')
+import fetchMock from 'fetch-mock'
 
-const graphql = require('..')
+import graphql from '../src'
 
 describe('graphql.defaults()', () => {
   it('is a function', () => {
@@ -57,7 +57,7 @@ describe('graphql.defaults()', () => {
       }
     }`)
       .then(result => {
-        expect(result).toStrictequal(mockData)
+        expect(result).toStrictEqual(mockData)
       })
   })
 

@@ -1,9 +1,9 @@
-const getUserAgent = require('universal-user-agent')
-const fetchMock = require('fetch-mock/es5/server')
+import fetchMock from 'fetch-mock'
+import getUserAgent from 'universal-user-agent'
 
-const graphql = require('..')
+import graphql from '../src'
 
-const pkg = require('../package.json')
+import pkg from '../package.json'
 const userAgent = `octokit-graphql.js/${pkg.version} ${getUserAgent()}`
 
 describe('graphql()', () => {
