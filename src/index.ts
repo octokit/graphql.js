@@ -1,8 +1,8 @@
 import { request } from "@octokit/request";
 import getUserAgent from "universal-user-agent";
 
-import { version } from "../package.json";
-const userAgent = `octokit-graphql.js/${version} ${getUserAgent()}`;
+import { VERSION } from "./version";
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 import { withDefaults } from "./with-defaults";
 

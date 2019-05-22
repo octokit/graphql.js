@@ -83,5 +83,23 @@
         "pika-plugin-unpkg-field"
       ]
     ]
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      [
+        "semantic-release-plugin-update-version-in-files",
+        {
+          "files": [
+            "dist-web/*",
+            "dist-node/*",
+            "*/version.*"
+          ]
+        }
+      ]
+    ]
   }
 }

@@ -3,8 +3,8 @@ import getUserAgent from "universal-user-agent";
 
 import { graphql } from "../src";
 
-import pkg from "../package.json";
-const userAgent = `octokit-graphql.js/${pkg.version} ${getUserAgent()}`;
+import { VERSION } from "../src/version";
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 describe("graphql()", () => {
   it("is a function", () => {
