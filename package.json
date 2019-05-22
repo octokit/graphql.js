@@ -9,6 +9,8 @@
   "scripts": {
     "build": "pack build",
     "coverage:upload": "cat ./coverage/lcov.info | coveralls",
+    "lint": "prettier --check {src,test}/* README.md package.json",
+    "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "pretest": "standard",
     "test": "jest --coverage"
   },
@@ -48,25 +50,11 @@
     "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.3",
     "pika-plugin-unpkg-field": "^1.1.0",
+    "prettier": "^1.17.1",
     "semantic-release": "^15.13.3",
     "simple-mock": "^0.8.0",
-    "standard": "^13.0.1",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
     "typescript": "^3.4.5"
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "before",
-      "beforeEach",
-      "afterEach",
-      "after",
-      "it",
-      "expect"
-    ]
   },
   "files": [
     "lib"
