@@ -21,22 +21,27 @@
 Send a simple query
 
 ```js
-const graphql = require('@octokit/graphql')
-const { repository } = await graphql(`{
-  repository(owner:"octokit", name:"graphql.js") {
-    issues(last:3) {
-      edges {
-        node {
-          title
+const graphql = require("@octokit/graphql");
+const { repository } = await graphql(
+  `
+    {
+      repository(owner: "octokit", name: "graphql.js") {
+        issues(last: 3) {
+          edges {
+            node {
+              title
+            }
+          }
         }
       }
     }
+  `,
+  {
+    headers: {
+      authorization: `token secret123`
+    }
   }
-}`, {
-  headers: {
-    authorization: `token secret123`
-  }
-})
+);
 ```
 
 ⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
@@ -98,22 +103,24 @@ const graphql2 = graphql1.defaults({
 Create a new client with default options and run query
 
 ```js
-const graphql = require('@octokit/graphql').defaults({
+const graphql = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token secret123`
   }
-})
-const { repository } = await graphql(`{
-  repository(owner:"octokit", name:"graphql.js") {
-    issues(last:3) {
-      edges {
-        node {
-          title
+});
+const { repository } = await graphql(`
+  {
+    repository(owner: "octokit", name: "graphql.js") {
+      issues(last: 3) {
+        edges {
+          node {
+            title
+          }
         }
       }
     }
   }
-}`)
+`);
 ```
 
 Pass query together with headers and variables
@@ -143,23 +150,25 @@ const { lastIssues } = await graphql({
 Use with GitHub Enterprise
 
 ```js
-const graphql = require('@octokit/graphql').defaults({
-  baseUrl: 'https://github-enterprise.acme-inc.com/api',
+const graphql = require("@octokit/graphql").defaults({
+  baseUrl: "https://github-enterprise.acme-inc.com/api",
   headers: {
     authorization: `token secret123`
   }
-})
-const { repository } = await graphql(`{
-  repository(owner:"acme-project", name:"acme-repo") {
-    issues(last:3) {
-      edges {
-        node {
-          title
+});
+const { repository } = await graphql(`
+  {
+    repository(owner: "acme-project", name: "acme-repo") {
+      issues(last: 3) {
+        edges {
+          node {
+            title
+          }
         }
       }
     }
   }
-}`)
+`);
 ```
 
 ## Errors
@@ -167,19 +176,19 @@ const { repository } = await graphql(`{
 In case of a GraphQL error, `error.message` is set to the first error from the response’s `errors` array. All errors can be accessed at `error.errors`. `error.request` has the request options such as query, variables and headers set for easier debugging.
 
 ```js
-const graphql = require('@octokit/graphql').defaults({
+const graphql = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token secret123`
   }
-})
+});
 const query = `{
   viewer {
     bioHtml
   }
-}`
+}`;
 
 try {
-  const result = await graphql(query)
+  const result = await graphql(query);
 } catch (error) {
   // server responds with
   // {
@@ -193,8 +202,8 @@ try {
   // 	}]
   // }
 
-  console.log('Request failed:', error.request) // { query, variables: {}, headers: { authorization: 'token secret123' } }
-  console.log(error.message) // Field 'bioHtml' doesn't exist on type 'User'
+  console.log("Request failed:", error.request); // { query, variables: {}, headers: { authorization: 'token secret123' } }
+  console.log(error.message); // Field 'bioHtml' doesn't exist on type 'User'
 }
 ```
 
@@ -203,11 +212,11 @@ try {
 A GraphQL query may respond with partial data accompanied by errors. In this case we will throw an error but the partial data will still be accessible through `error.data`
 
 ```js
-const graphql = require('@octokit/graphql').defaults({
+const graphql = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token secret123`
   }
-})
+});
 const query = `{
   repository(name: "probot", owner: "probot") {
     name
@@ -223,42 +232,42 @@ const query = `{
       }
     }
   }
-}`
+}`;
 
 try {
-  const result = await graphql(query)
+  const result = await graphql(query);
 } catch (error) {
   // server responds with
-  // { 
-  //   "data": { 
-  //     "repository": { 
-  //       "name": "probot", 
-  //       "ref": null 
-  //     } 
-  //   }, 
-  //   "errors": [ 
-  //     { 
-  //       "type": "INVALID_CURSOR_ARGUMENTS", 
-  //       "path": [ 
-  //         "repository", 
-  //         "ref", 
-  //         "target", 
-  //         "history" 
-  //       ], 
-  //       "locations": [ 
-  //         { 
-  //           "line": 7, 
-  //           "column": 11 
-  //         } 
-  //       ], 
-  //       "message": "`invalid cursor` does not appear to be a valid cursor." 
-  //     } 
-  //   ] 
-  // } 
+  // {
+  //   "data": {
+  //     "repository": {
+  //       "name": "probot",
+  //       "ref": null
+  //     }
+  //   },
+  //   "errors": [
+  //     {
+  //       "type": "INVALID_CURSOR_ARGUMENTS",
+  //       "path": [
+  //         "repository",
+  //         "ref",
+  //         "target",
+  //         "history"
+  //       ],
+  //       "locations": [
+  //         {
+  //           "line": 7,
+  //           "column": 11
+  //         }
+  //       ],
+  //       "message": "`invalid cursor` does not appear to be a valid cursor."
+  //     }
+  //   ]
+  // }
 
-  console.log('Request failed:', error.request) // { query, variables: {}, headers: { authorization: 'token secret123' } }
-  console.log(error.message) // `invalid cursor` does not appear to be a valid cursor.
-  console.log(error.data) // { repository: { name: 'probot', ref: null } }
+  console.log("Request failed:", error.request); // { query, variables: {}, headers: { authorization: 'token secret123' } }
+  console.log(error.message); // `invalid cursor` does not appear to be a valid cursor.
+  console.log(error.data); // { repository: { name: 'probot', ref: null } }
 }
 ```
 
@@ -267,24 +276,29 @@ try {
 You can pass a replacement for [the built-in fetch implementation](https://github.com/bitinn/node-fetch) as `request.fetch` option. For example, using [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/) works great to write tests
 
 ```js
-const assert = require('assert')
-const fetchMock = require('fetch-mock/es5/server')
+const assert = require("assert");
+const fetchMock = require("fetch-mock/es5/server");
 
-const graphql = require('@octokit/graphql')
+const graphql = require("@octokit/graphql");
 
-graphql('{ viewer { login } }', {
+graphql("{ viewer { login } }", {
   headers: {
-    authorization: 'token secret123'
+    authorization: "token secret123"
   },
   request: {
-    fetch: fetchMock.sandbox()
-      .post('https://api.github.com/graphql', (url, options) => {
-        assert.strictEqual(options.headers.authorization, 'token secret123')
-        assert.strictEqual(options.body, '{"query":"{ viewer { login } }"}', 'Sends correct query')
-        return { data: {} }
+    fetch: fetchMock
+      .sandbox()
+      .post("https://api.github.com/graphql", (url, options) => {
+        assert.strictEqual(options.headers.authorization, "token secret123");
+        assert.strictEqual(
+          options.body,
+          '{"query":"{ viewer { login } }"}',
+          "Sends correct query"
+        );
+        return { data: {} };
       })
   }
-})
+});
 ```
 
 ## License
