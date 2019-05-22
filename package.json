@@ -5,7 +5,6 @@
     "access": "public"
   },
   "description": "GitHub GraphQL API client for browsers and Node",
-  "main": "lib/index.js",
   "scripts": {
     "build": "pack build",
     "lint": "prettier --check {src,test}/* README.md package.json",
