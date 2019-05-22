@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 
-import graphql from "../src";
+import { graphql } from "../src";
 
 describe("graphql.defaults()", () => {
   it("is a function", () => {

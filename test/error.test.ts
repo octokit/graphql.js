@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 
-import graphql from "../src";
+import { graphql } from "../src";
 
 describe("errors", () => {
   it("Invalid query", () => {

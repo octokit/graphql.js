@@ -1,7 +1,7 @@
 import fetchMock from "fetch-mock";
 import getUserAgent from "universal-user-agent";
 
-import graphql from "../src";
+import { graphql } from "../src";
 
 import pkg from "../package.json";
 const userAgent = `octokit-graphql.js/${pkg.version} ${getUserAgent()}`;
