@@ -8,7 +8,6 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "pack build",
-    "coverage:upload": "cat ./coverage/lcov.info | coveralls",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "pretest": "standard",
@@ -60,7 +59,15 @@
     "lib"
   ],
   "jest": {
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
   },
   "@pika/pack": {
     "pipeline": [
