@@ -41,7 +41,11 @@ jobs:
       env: bundle size
       script:
         - npm run build
-        - npx bundlesize
+        - npx terser pkg/dist-web/index.bundled.js --output pkg/dist-web/index.bundled.min.js --compress --mangle
+        - npx bundlesize --files pkg/dist-web/index.bundled.min.js --max-size 3KB
+    - node_js: lts/*
+      env: build test
+      script: npm run build
 
     # release stage: run semantic release & update the docs
     - stage: release
@@ -49,5 +53,4 @@ jobs:
       env: semantic-release
       script:
         - npm run build
-        - npm run bundle-report
-        - npx semantic-release
+        - cd pkg && ../node_modules/.bin/semantic-release
