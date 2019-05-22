@@ -18,10 +18,39 @@
 
 ## Usage
 
+<table>
+<tbody valign=top align=left>
+<tr><th>
+Browsers
+</th><td width=100%>
+Load <code>@octokit/graphql</code> directly from <a href="https://unpkg.com">unpkg.com</a>
+        
+```html
+<script type="module">
+import { endpoint } from "https://unpkg.com/@octokit/graphql";
+</script>
+```
+
+</td></tr>
+<tr><th>
+Node
+</th><td>
+
+Install with <code>npm install @octokit/graphql</code>
+
+```js
+const { graphql } = require("@octokit/endpoint");
+// or: import { graphql } from "@octokit/endpoint";
+```
+
+</td></tr>
+</tbody>
+</table>
+
 Send a simple query
 
 ```js
-const graphql = require("@octokit/graphql");
+const { graphql } = require("@octokit/graphql");
 const { repository } = await graphql(
   `
     {
@@ -47,7 +76,7 @@ const { repository } = await graphql(
 ⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
 
 ```js
-const graphql = require('@octokit/graphql')
+const { graphql } = require('@octokit/graphql')
 const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
       issues(last:$num) {
@@ -103,7 +132,8 @@ const graphql2 = graphql1.defaults({
 Create a new client with default options and run query
 
 ```js
-const graphql = require("@octokit/graphql").defaults({
+let { graphql } = require("@octokit/graphql");
+graphql = graphql.defaults({
   headers: {
     authorization: `token secret123`
   }
@@ -126,7 +156,7 @@ const { repository } = await graphql(`
 Pass query together with headers and variables
 
 ```js
-const graphql = require('@octokit/graphql')
+const { graphql } = require('@octokit/graphql')
 const { lastIssues } = await graphql({
   query: `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
@@ -150,7 +180,8 @@ const { lastIssues } = await graphql({
 Use with GitHub Enterprise
 
 ```js
-const graphql = require("@octokit/graphql").defaults({
+let { graphql } = require("@octokit/graphql");
+graphql = graphql.defaults({
   baseUrl: "https://github-enterprise.acme-inc.com/api",
   headers: {
     authorization: `token secret123`
@@ -176,7 +207,8 @@ const { repository } = await graphql(`
 In case of a GraphQL error, `error.message` is set to the first error from the response’s `errors` array. All errors can be accessed at `error.errors`. `error.request` has the request options such as query, variables and headers set for easier debugging.
 
 ```js
-const graphql = require("@octokit/graphql").defaults({
+let { graphql } = require("@octokit/graphql");
+graphqlt = graphql.defaults({
   headers: {
     authorization: `token secret123`
   }
@@ -212,7 +244,8 @@ try {
 A GraphQL query may respond with partial data accompanied by errors. In this case we will throw an error but the partial data will still be accessible through `error.data`
 
 ```js
-const graphql = require("@octokit/graphql").defaults({
+let { graphql } = require("@octokit/graphql");
+graphql = graphql.defaults({
   headers: {
     authorization: `token secret123`
   }
@@ -279,7 +312,7 @@ You can pass a replacement for [the built-in fetch implementation](https://githu
 const assert = require("assert");
 const fetchMock = require("fetch-mock/es5/server");
 
-const graphql = require("@octokit/graphql");
+const { graphql } = require("@octokit/graphql");
 
 graphql("{ viewer { login } }", {
   headers: {
