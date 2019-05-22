@@ -1,11 +1,11 @@
 import { request as Request } from '@octokit/request'
 import { Endpoint, Parameters } from '@octokit/request/dist-types/types'
-import GraphqlError from './error'
+import { GraphqlError } from './error'
 import { GraphQlQueryResponse } from './types'
 
 const NON_VARIABLE_OPTIONS = ['method', 'baseUrl', 'url', 'headers', 'request', 'query']
 
-export default function graphql<T extends GraphQlQueryResponse> (request: typeof Request, query: string | Endpoint, options?: Parameters) {
+export function graphql<T extends GraphQlQueryResponse> (request: typeof Request, query: string | Endpoint, options?: Parameters) {
   options = typeof query === 'string'
     ? options = Object.assign({ query }, options)
     : options = query
