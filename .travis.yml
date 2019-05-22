@@ -24,6 +24,8 @@ jobs:
       env: Node 10, coverage upload
       script:
         - npm run test
+    - node_js: 12
+      script: npm run test
     - node_js: lts/*
       addons:
         apt:
