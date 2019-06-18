@@ -63,7 +63,39 @@ const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: S
 })
 ```
 
-Set default options
+Create two new clients and set separate default configs for them.
+
+```js
+const graphql1 = require('@octokit/graphql').defaults({
+  headers: {
+    authorization: `token secret123`
+  }
+})
+
+const graphql2 = require('@octokit/graphql').defaults({
+  headers: {
+    authorization: `token foobar`
+  }
+})
+```
+
+Create two clients, the second inherits config from the first.
+
+```js
+const graphql1 = require('@octokit/graphql').defaults({
+  headers: {
+    authorization: `token secret123`
+  }
+})
+
+const graphql2 = graphql1.defaults({
+  headers: {
+    'user-agent': 'my-user-agent/v1.2.3'
+  }
+})
+```
+
+Create a new client with default options and run query
 
 ```js
 const graphql = require('@octokit/graphql').defaults({
