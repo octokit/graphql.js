@@ -19,7 +19,7 @@ stages:
 jobs:
   include:
     - stage: test
-      node_js: 6
+      node_js: 12
       script: npm run test
     - node_js: 8
       script: npm run test
