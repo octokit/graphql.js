@@ -6,7 +6,7 @@
   },
   "description": "GitHub GraphQL API client for browsers and Node",
   "scripts": {
-    "build": "pack build",
+    "build": "pika build",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "test": "jest --coverage"
@@ -32,25 +32,21 @@
     "universal-user-agent": "^3.0.0"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.7",
-    "@pika/plugin-build-node": "^0.4.0",
-    "@pika/plugin-build-web": "^0.4.0",
-    "@pika/plugin-bundle-web": "^0.4.0",
-    "@pika/plugin-ts-standard-pkg": "^0.4.0",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.6.0",
+    "@pika/plugin-build-web": "^0.6.0",
+    "@pika/plugin-ts-standard-pkg": "^0.6.0",
     "@types/fetch-mock": "^7.2.5",
     "@types/jest": "^24.0.13",
     "@types/node": "^12.0.2",
     "fetch-mock": "^7.3.1",
     "jest": "^24.8.0",
-    "pika-plugin-unpkg-field": "^1.1.0",
     "prettier": "^1.17.1",
     "semantic-release": "^15.13.3",
+    "semantic-release-plugin-update-version-in-files": "^1.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5"
   },
-  "files": [
-    "lib"
-  ],
   "jest": {
     "preset": "ts-jest",
     "coverageThreshold": {
@@ -72,15 +68,6 @@
       ],
       [
         "@pika/plugin-build-web"
-      ],
-      [
-        "@pika/plugin-bundle-web",
-        {
-          "browser": true
-        }
-      ],
-      [
-        "pika-plugin-unpkg-field"
       ]
     ]
   },
