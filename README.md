@@ -22,11 +22,12 @@
 <tr><th>
 Browsers
 </th><td width=100%>
-Load <code>@octokit/graphql</code> directly from <a href="https://unpkg.com">unpkg.com</a>
-        
+
+Load `@octokit/graphql` directly from [cdn.pika.dev](https://cdn.pika.dev)
+
 ```html
 <script type="module">
-import { endpoint } from "https://unpkg.com/@octokit/graphql";
+  import { endpoint } from "https://cdn.pika.dev/@octokit/graphql";
 </script>
 ```
 
@@ -38,8 +39,8 @@ Node
 Install with <code>npm install @octokit/graphql</code>
 
 ```js
-const { graphql } = require("@octokit/endpoint");
-// or: import { graphql } from "@octokit/endpoint";
+const { graphql } = require("@octokit/graphql");
+// or: import { graphql } from "@octokit/graphql";
 ```
 
 </td></tr>
@@ -49,7 +50,6 @@ const { graphql } = require("@octokit/endpoint");
 Send a simple query
 
 ```js
-const { graphql } = require("@octokit/graphql");
 const { repository } = await graphql(
   `
     {
@@ -99,33 +99,33 @@ const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: S
 Create two new clients and set separate default configs for them.
 
 ```js
-const graphql1 = require('@octokit/graphql').defaults({
+const graphql1 = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token secret123`
   }
-})
+});
 
-const graphql2 = require('@octokit/graphql').defaults({
+const graphql2 = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token foobar`
   }
-})
+});
 ```
 
 Create two clients, the second inherits config from the first.
 
 ```js
-const graphql1 = require('@octokit/graphql').defaults({
+const graphql1 = require("@octokit/graphql").defaults({
   headers: {
     authorization: `token secret123`
   }
-})
+});
 
 const graphql2 = graphql1.defaults({
   headers: {
-    'user-agent': 'my-user-agent/v1.2.3'
+    "user-agent": "my-user-agent/v1.2.3"
   }
-})
+});
 ```
 
 Create a new client with default options and run query
