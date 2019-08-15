@@ -40,7 +40,9 @@ export function graphql<T extends GraphQlQueryResponse>(
 
   return request<T>(requestOptions).then(response => {
     if (response.data.errors) {
-      throw new GraphqlError<T>(requestOptions, response);
+      throw new GraphqlError<T>(requestOptions, {
+        data: response.data as Required<GraphQlQueryResponse>
+      });
     }
 
     return response.data.data;
