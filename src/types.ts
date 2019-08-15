@@ -1,6 +1,38 @@
 import { Agent } from "http";
+import { request } from "@octokit/request";
 
-export interface GraphQlQueryResponse {
+export type Query = string;
+
+export interface graphql {
+  /**
+   * Sends a request based on endpoint options
+   *
+   * @param {object} endpoint Must set `method` and `url`. Plus URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
+   */
+  <T = any>(options: Parameters): Promise<GraphQlQueryResponse>;
+
+  /**
+   * Sends a request based on endpoint options
+   *
+   * @param {string} route Request method + URL. Example: `'GET /orgs/:org'`
+   * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
+   */
+  <T = any>(query: Query, parameters?: Parameters): Promise<
+    GraphQlQueryResponse
+  >;
+
+  /**
+   * Returns a new `endpoint` with updated route and parameters
+   */
+  defaults: (newDefaults: Parameters) => graphql;
+
+  /**
+   * Octokit endpoint API, see {@link https://github.com/octokit/endpoint.js|@octokit/endpoint}
+   */
+  endpoint: typeof request.endpoint;
+}
+
+export type GraphQlQueryResponse = {
   data: { [key: string]: any } | null;
   errors?: [
     {
@@ -15,7 +47,7 @@ export interface GraphQlQueryResponse {
       ];
     }
   ];
-}
+};
 
 // TODO: deduplicate
 /**

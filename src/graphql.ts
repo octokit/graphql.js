@@ -13,7 +13,7 @@ const NON_VARIABLE_OPTIONS = [
 
 export function graphql<T extends GraphQlQueryResponse>(
   request: typeof Request,
-  query: string | Endpoint,
+  query: string | Parameters,
   options?: Parameters
 ) {
   options =

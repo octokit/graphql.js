@@ -6,6 +6,12 @@ import { graphql } from "../src";
 import { VERSION } from "../src/version";
 const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
+type RequestOptions = {
+  body: string;
+};
+
+import { Parameters } from "../src/types";
+
 describe("graphql()", () => {
   it("is a function", () => {
     expect(graphql).toBeInstanceOf(Function);
@@ -55,21 +61,19 @@ describe("graphql()", () => {
           authorization: `token secret123`
         },
         request: {
-          fetch: fetchMock.sandbox().post(
-            "https://api.github.com/graphql",
-            { data: mockData },
-            {
+          fetch: fetchMock
+            .sandbox()
+            .post("https://api.github.com/graphql", mockData, {
               headers: {
                 accept: "application/vnd.github.v3+json",
                 authorization: "token secret123",
                 "user-agent": userAgent
               }
-            }
-          )
+            })
         }
       }
     ).then(result => {
-      expect(result).toStrictEqual(mockData);
+      expect(result.data).toStrictEqual(mockData);
     });
   });
 
@@ -95,16 +99,19 @@ describe("graphql()", () => {
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", (url, options) => {
-            const body = JSON.parse(options.body.toString());
-            expect(body.query).toEqual(query);
-            expect(body.variables).toStrictEqual({
-              owner: "octokit",
-              repo: "graphql.js"
-            });
+          .post(
+            "https://api.github.com/graphql",
+            (url, options: RequestOptions) => {
+              const body = JSON.parse(options.body.toString());
+              expect(body.query).toEqual(query);
+              expect(body.variables).toStrictEqual({
+                owner: "octokit",
+                repo: "graphql.js"
+              });
 
-            return { data: {} };
-          })
+              return { data: {} };
+            }
+          )
       }
     });
   });
@@ -122,9 +129,7 @@ describe("graphql()", () => {
       }
     }`;
 
-    return graphql({
-      method: "POST",
-      url: "/",
+    const options: Parameters = {
       headers: {
         authorization: `token secret123`
       },
@@ -134,18 +139,23 @@ describe("graphql()", () => {
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", (url, options) => {
-            const body = JSON.parse(options.body.toString());
-            expect(body.query).toEqual(query);
-            expect(body.variables).toStrictEqual({
-              owner: "octokit",
-              repo: "graphql.js"
-            });
+          .post(
+            "https://api.github.com/graphql",
+            (url, options: RequestOptions) => {
+              const body = JSON.parse(options.body.toString());
+              expect(body.query).toEqual(query);
+              expect(body.variables).toStrictEqual({
+                owner: "octokit",
+                repo: "graphql.js"
+              });
 
-            return { data: {} };
-          })
+              return { data: {} };
+            }
+          )
       }
-    });
+    };
+
+    return graphql(options);
   });
 
   it("Don’t send empty variables object", () => {
@@ -158,13 +168,16 @@ describe("graphql()", () => {
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", (url, options) => {
-            const body = JSON.parse(options.body.toString());
-            expect(body.query).toEqual(query);
-            expect(body.variables).toEqual(undefined);
+          .post(
+            "https://api.github.com/graphql",
+            (url, options: RequestOptions) => {
+              const body = JSON.parse(options.body.toString());
+              expect(body.query).toEqual(query);
+              expect(body.variables).toEqual(undefined);
 
-            return { data: {} };
-          })
+              return { data: {} };
+            }
+          )
       }
     });
   });

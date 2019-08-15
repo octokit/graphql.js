@@ -1,14 +1,19 @@
 import { request as Request } from "@octokit/request";
-import { Endpoint, Parameters, GraphQlQueryResponse } from "./types";
+import {
+  graphql as ApiInterface,
+  Query,
+  Parameters,
+  GraphQlQueryResponse
+} from "./types";
 import { graphql } from "./graphql";
 
 export function withDefaults(
   request: typeof Request,
   newDefaults: Parameters
-): typeof Request {
+): ApiInterface {
   const newRequest = request.defaults(newDefaults);
   const newApi = function<T extends GraphQlQueryResponse>(
-    query: string | Endpoint,
+    query: Query | Parameters,
     options?: Parameters
   ) {
     return graphql<T>(newRequest, query, options);
