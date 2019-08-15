@@ -1,7 +1,6 @@
 import { request as Request } from "@octokit/request";
-import { Endpoint, Parameters } from "@octokit/request/dist-types/types";
 import { GraphqlError } from "./error";
-import { GraphQlQueryResponse } from "./types";
+import { Endpoint, Parameters, GraphQlQueryResponse } from "./types";
 
 const NON_VARIABLE_OPTIONS = [
   "method",
@@ -36,7 +35,7 @@ export function graphql<T extends GraphQlQueryResponse>(
       result.variables[key] = options![key];
       return result;
     },
-    {}
+    {} as Endpoint
   );
 
   return request<T>(requestOptions).then(response => {
