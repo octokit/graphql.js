@@ -10,6 +10,7 @@
 
 - [Usage](#usage)
 - [Errors](#errors)
+- [Partial responses](#partial-responses)
 - [Writing tests](#writing-tests)
 - [License](#license)
 
