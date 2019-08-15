@@ -109,4 +109,27 @@ describe("errors", () => {
         expect(error.data).toStrictEqual(mockResponse.data);
       });
   });
+
+  it("Should throw for server error", () => {
+    const query = `{
+      viewer { 
+        login
+      }
+    }`;
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`
+      },
+      request: {
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", 500)
+      }
+    })
+      .then(result => {
+        throw new Error("Should not resolve");
+      })
+      .catch(error => {
+        expect(error.status).toEqual(500);
+      });
+  });
 });

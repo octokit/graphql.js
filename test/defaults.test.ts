@@ -37,13 +37,15 @@ describe("graphql.defaults()", () => {
         authorization: `token secret123`
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post("https://api.github.com/graphql", mockData, {
+        fetch: fetchMock.sandbox().post(
+          "https://api.github.com/graphql",
+          { data: mockData },
+          {
             headers: {
               authorization: "token secret123"
             }
-          })
+          }
+        )
       }
     });
     return authenticatedGraphql(`{
@@ -57,7 +59,7 @@ describe("graphql.defaults()", () => {
         }
       }
     }`).then(result => {
-      expect(result.data).toStrictEqual(mockData);
+      expect(result).toStrictEqual(mockData);
     });
   });
 
@@ -91,13 +93,15 @@ describe("graphql.defaults()", () => {
         authorization: `token secret123`
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post("https://github.acme-inc.com/api/graphql", mockData, {
+        fetch: fetchMock.sandbox().post(
+          "https://github.acme-inc.com/api/graphql",
+          { data: mockData },
+          {
             headers: {
               authorization: "token secret123"
             }
-          })
+          }
+        )
       }
     });
     const acmeGraphql = authenticatedGraphql.defaults({
@@ -114,7 +118,7 @@ describe("graphql.defaults()", () => {
         }
       }
     }`).then(result => {
-      expect(result.data).toStrictEqual(mockData);
+      expect(result).toStrictEqual(mockData);
     });
   });
 });

@@ -43,6 +43,6 @@ export function graphql<T extends GraphQlQueryResponse>(
       throw new GraphqlError<T>(requestOptions, response);
     }
 
-    return response;
+    return response.data.data;
   });
 }

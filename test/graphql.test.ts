@@ -61,19 +61,21 @@ describe("graphql()", () => {
           authorization: `token secret123`
         },
         request: {
-          fetch: fetchMock
-            .sandbox()
-            .post("https://api.github.com/graphql", mockData, {
+          fetch: fetchMock.sandbox().post(
+            "https://api.github.com/graphql",
+            { data: mockData },
+            {
               headers: {
                 accept: "application/vnd.github.v3+json",
                 authorization: "token secret123",
                 "user-agent": userAgent
               }
-            })
+            }
+          )
         }
       }
     ).then(result => {
-      expect(result.data).toStrictEqual(mockData);
+      expect(result).toStrictEqual(mockData);
     });
   });
 

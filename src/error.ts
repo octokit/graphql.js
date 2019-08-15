@@ -1,9 +1,12 @@
-import { OctokitResponse, Endpoint, GraphQlQueryResponse } from "./types";
+import { Endpoint, GraphQlQueryResponse } from "./types";
 
 export class GraphqlError<T extends GraphQlQueryResponse> extends Error {
   public request: Endpoint;
-  constructor(request: Endpoint, response: OctokitResponse<T>) {
-    const message = response.data ? response.data.errors![0].message : "ERROR";
+  constructor(
+    request: Endpoint,
+    response: { data: Required<GraphQlQueryResponse> }
+  ) {
+    const message = response.data.errors[0].message;
     super(message);
 
     Object.assign(this, response.data);
