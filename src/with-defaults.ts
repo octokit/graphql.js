@@ -12,11 +12,8 @@ export function withDefaults(
   newDefaults: Parameters
 ): ApiInterface {
   const newRequest = request.defaults(newDefaults);
-  const newApi = function<T extends GraphQlQueryResponse>(
-    query: Query | Parameters,
-    options?: Parameters
-  ) {
-    return graphql<T>(newRequest, query, options);
+  const newApi = (query: Query | Parameters, options?: Parameters) => {
+    return graphql(newRequest, query, options);
   };
 
   return Object.assign(newApi, {
