@@ -15,33 +15,12 @@ stages:
 
 jobs:
   include:
-    - stage: test
-      node_js: 12
-      script: npm run test
     - node_js: 8
       script: npm run test
     - node_js: 10
-      env: Node 10, coverage upload
-      script:
-        - npm run test
-        - npm run coverage:upload
-    - node_js: lts/*
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-      env: browser tests
-      script:
-        - npm run test:browser
-    - node_js: lts/*
-      sudo: required
-      addons:
-        chrome: stable
-      env: bundle size
-      script:
-        - npm run build
-        - npx bundlesize
+      script: npm run test
+    - node_js: 12
+      script: npm run test
 
     # release stage: run semantic release & update the docs
     - stage: release
@@ -49,5 +28,4 @@ jobs:
       env: semantic-release
       script:
         - npm run build
-        - npm run bundle-report
-        - npx semantic-release
+        - cd pkg && ../node_modules/.bin/semantic-release
