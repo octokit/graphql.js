@@ -15,38 +15,12 @@ stages:
 
 jobs:
   include:
-    - stage: test
-      node_js: 12
-      script: npm run test
     - node_js: 8
       script: npm run test
     - node_js: 10
-      env: Node 10, coverage upload
-      script:
-        - npm run test
+      script: npm run test
     - node_js: 12
       script: npm run test
-    - node_js: lts/*
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-      env: browser tests
-      script:
-        - npm run test:browser
-    - node_js: lts/*
-      sudo: required
-      addons:
-        chrome: stable
-      env: bundle size
-      script:
-        - npm run build
-        - npx terser pkg/dist-web/index.bundled.js --output pkg/dist-web/index.bundled.min.js --compress --mangle
-        - npx bundlesize --files pkg/dist-web/index.bundled.min.js --max-size 3KB
-    - node_js: lts/*
-      env: build test
-      script: npm run build
 
     # release stage: run semantic release & update the docs
     - stage: release
