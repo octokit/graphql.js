@@ -11,11 +11,11 @@ const NON_VARIABLE_OPTIONS = [
   "query"
 ];
 
-export function graphql(
+export function graphql<T extends GraphQlQueryResponse>(
   request: typeof Request,
   query: string | Parameters,
   options?: Parameters
-): Promise<GraphQlQueryResponse> {
+) {
   options =
     typeof query === "string"
       ? (options = Object.assign({ query }, options))
@@ -38,13 +38,13 @@ export function graphql(
     {} as Endpoint
   );
 
-  return request(requestOptions).then(response => {
+  return request<T>(requestOptions).then(response => {
     if (response.data.errors) {
       throw new GraphqlError(requestOptions, {
-        data: response.data as Required<GraphQlQueryResponse>
+        data: response.data 
       });
     }
 
-    return response.data.data;
+    return response.data.data as T;
   });
 }

@@ -4,9 +4,9 @@ export class GraphqlError<T extends GraphQlQueryResponse> extends Error {
   public request: Endpoint;
   constructor(
     request: Endpoint,
-    response: { data: Required<GraphQlQueryResponse> }
+    response: { data: T }
   ) {
-    const message = response.data.errors[0].message;
+    const message = response.data.errors![0].message;
     super(message);
 
     Object.assign(this, response.data);
