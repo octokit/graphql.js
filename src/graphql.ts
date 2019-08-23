@@ -1,6 +1,6 @@
 import { request as Request } from "@octokit/request";
 import { GraphqlError } from "./error";
-import { Endpoint, Parameters, GraphQlQueryResponse } from "./types";
+import { Endpoint, Parameters, GraphQlQueryResponse, GraphQlQueryResponseData } from "./types";
 
 const NON_VARIABLE_OPTIONS = [
   "method",
@@ -15,7 +15,7 @@ export function graphql(
   request: typeof Request,
   query: string | Parameters,
   options?: Parameters
-): Promise<GraphQlQueryResponse> {
+): Promise<GraphQlQueryResponseData> {
   options =
     typeof query === "string"
       ? (options = Object.assign({ query }, options))
