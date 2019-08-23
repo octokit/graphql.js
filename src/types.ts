@@ -9,7 +9,7 @@ export interface graphql {
    *
    * @param {object} endpoint Must set `method` and `url`. Plus URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (options: Parameters): Promise<GraphQlQueryResponse>;
+  (options: Parameters): Promise<GraphQlQueryResponseData>;
 
   /**
    * Sends a request based on endpoint options
@@ -17,7 +17,7 @@ export interface graphql {
    * @param {string} route Request method + URL. Example: `'GET /orgs/:org'`
    * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (query: Query, parameters?: Parameters): Promise<GraphQlQueryResponse>;
+  (query: Query, parameters?: Parameters): Promise<GraphQlQueryResponseData>;
 
   /**
    * Returns a new `endpoint` with updated route and parameters
@@ -30,8 +30,12 @@ export interface graphql {
   endpoint: typeof request.endpoint;
 }
 
+export type GraphQlQueryResponseData = {
+  [key: string]: any;
+} | null;
+
 export type GraphQlQueryResponse = {
-  data: { [key: string]: any } | null;
+  data: GraphQlQueryResponseData;
   errors?: [
     {
       message: string;
