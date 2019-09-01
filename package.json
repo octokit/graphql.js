@@ -7,6 +7,7 @@
   "description": "GitHub GraphQL API client for browsers and Node",
   "scripts": {
     "build": "pika build",
+    "postbuild": "node scripts/copy-definitions.js",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "test": "jest --coverage"
