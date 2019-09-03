@@ -1,5 +1,5 @@
 import fetchMock from "fetch-mock";
-import getUserAgent from "universal-user-agent";
+import { getUserAgent } from "universal-user-agent";
 
 import { graphql } from "../src";
 
