@@ -1,5 +1,5 @@
 import { request } from "@octokit/request";
-import getUserAgent from "universal-user-agent";
+import { getUserAgent } from "universal-user-agent";
 
 import { VERSION } from "./version";
 
