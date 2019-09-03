@@ -29,7 +29,7 @@
   "homepage": "https://github.com/octokit/graphql.js#readme",
   "dependencies": {
     "@octokit/request": "^5.0.0",
-    "universal-user-agent": "^3.0.0"
+    "universal-user-agent": "^4.0.0"
   },
   "devDependencies": {
     "@pika/pack": "^0.5.0",
