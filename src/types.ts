@@ -1,5 +1,5 @@
 import { Agent } from "http";
-import { request } from "@octokit/request";
+import { request as Request } from "@octokit/request";
 
 export type Query = string;
 
@@ -27,8 +27,10 @@ export interface graphql {
   /**
    * Octokit endpoint API, see {@link https://github.com/octokit/endpoint.js|@octokit/endpoint}
    */
-  endpoint: typeof request.endpoint;
+  endpoint: typeof Request.endpoint;
 }
+
+// export type withCustomRequest = (request: typeof Request) => graphql;
 
 export type GraphQlQueryResponseData = {
   [key: string]: any;
