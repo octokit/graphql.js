@@ -13,6 +13,7 @@
   - [Authentication](#authentication)
   - [Variables](#variables)
   - [Pass query together with headers and variables](#pass-query-together-with-headers-and-variables)
+  - [Use your own `@octokit/request` instance](#)
 - [Errors](#errors)
 - [Partial responses](#partial-responses)
 - [Writing tests](#writing-tests)
@@ -181,7 +182,7 @@ const { lastIssues } = await graphql({
 })
 ```
 
-Use with GitHub Enterprise
+### Use with GitHub Enterprise
 
 ```js
 let { graphql } = require("@octokit/graphql");
@@ -204,6 +205,42 @@ const { repository } = await graphql(`
     }
   }
 `);
+```
+
+### Use custom `@octokit/request` instance
+
+```js
+const { request } = require("@octokit/request");
+const { withCustomRequest } = require("@octokit/graphql");
+
+let requestCounter = 0
+const myRequest = request.defaults({
+  headers: {
+    authentication: 'token secret123'
+  },
+  request: {
+    hook(request, options) {
+      requestCounter++
+      return request(options)
+    }
+  }
+})
+const myGraphql = withCustomRequest(myRequest) 
+await request('/')
+await myGraphql(`
+  {
+    repository(owner: "acme-project", name: "acme-repo") {
+      issues(last: 3) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }
+`);
+// requestCounter is now 2
 ```
 
 ## Errors
