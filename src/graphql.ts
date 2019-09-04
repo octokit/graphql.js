@@ -1,6 +1,11 @@
 import { request as Request } from "@octokit/request";
 import { GraphqlError } from "./error";
-import { Endpoint, Parameters, GraphQlQueryResponse, GraphQlQueryResponseData } from "./types";
+import {
+  Endpoint,
+  Parameters,
+  GraphQlQueryResponse,
+  GraphQlQueryResponseData
+} from "./types";
 
 const NON_VARIABLE_OPTIONS = [
   "method",
