@@ -9,6 +9,10 @@
 <!-- toc -->
 
 - [Usage](#usage)
+  - [Send a simple query](#send-a-simple-query)
+  - [Authentication](#authentication)
+  - [Variables](#variables)
+  - [Pass query together with headers and variables](#pass-query-together-with-headers-and-variables)
 - [Errors](#errors)
 - [Partial responses](#partial-responses)
 - [Writing tests](#writing-tests)
@@ -48,7 +52,7 @@ const { graphql } = require("@octokit/graphql");
 </tbody>
 </table>
 
-Send a simple query
+### Send a simple query
 
 ```js
 const { repository } = await graphql(
@@ -73,10 +77,66 @@ const { repository } = await graphql(
 );
 ```
 
+### Authentication
+
+The simplest way to authenticate a request is to set the `Authorization` header, e.g. to a [personal access token](https://github.com/settings/tokens/).
+
+```js
+const graphqlWithAuth = graphql.defaults({
+  headers: {
+    authorization: `token secret123`
+  }
+});
+const { repository } = await graphqlWithAuth(`
+  {
+    repository(owner: "octokit", name: "graphql.js") {
+      issues(last: 3) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }
+`);
+```
+
+For more complex authentication strategies such as GitHub Apps or Basic, we recommend the according authentication library exported by [`@octokit/auth`](https://github.com/octokit/auth.js).
+
+```js
+const { createAppAuth } = require("@octokit/auth-app");
+const auth = createAppAuth({
+  id: process.env.APP_ID,
+  privateKey: process.env.PRIVATE_KEY,
+  installationId: 123
+});
+const graphqlWithAuth = graphql.defaults({
+  request: {
+    hook: auth.hook
+  }
+});
+
+const { repository } = await graphqlWithAuth(
+  `{
+    repository(owner: "octokit", name: "graphql.js") {
+      issues(last: 3) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }`
+);
+```
+
+### Variables
+
 ⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
 
 ```js
-const { graphql } = require('@octokit/graphql')
 const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
       issues(last:$num) {
@@ -97,63 +157,7 @@ const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: S
 })
 ```
 
-Create two new clients and set separate default configs for them.
-
-```js
-const graphql1 = require("@octokit/graphql").defaults({
-  headers: {
-    authorization: `token secret123`
-  }
-});
-
-const graphql2 = require("@octokit/graphql").defaults({
-  headers: {
-    authorization: `token foobar`
-  }
-});
-```
-
-Create two clients, the second inherits config from the first.
-
-```js
-const graphql1 = require("@octokit/graphql").defaults({
-  headers: {
-    authorization: `token secret123`
-  }
-});
-
-const graphql2 = graphql1.defaults({
-  headers: {
-    "user-agent": "my-user-agent/v1.2.3"
-  }
-});
-```
-
-Create a new client with default options and run query
-
-```js
-let { graphql } = require("@octokit/graphql");
-graphql = graphql.defaults({
-  headers: {
-    authorization: `token secret123`
-  }
-});
-const { repository } = await graphql(`
-  {
-    repository(owner: "octokit", name: "graphql.js") {
-      issues(last: 3) {
-        edges {
-          node {
-            title
-          }
-        }
-      }
-    }
-  }
-`);
-```
-
-Pass query together with headers and variables
+### Pass query together with headers and variables
 
 ```js
 const { graphql } = require('@octokit/graphql')
