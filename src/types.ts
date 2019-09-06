@@ -1,5 +1,6 @@
 import { Agent } from "http";
 import { request as Request } from "@octokit/request";
+import { graphql } from './graphql'
 
 export type Query = string;
 
@@ -9,7 +10,7 @@ export interface graphql {
    *
    * @param {object} endpoint Must set `method` and `url`. Plus URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (options: Parameters): Promise<GraphQlQueryResponseData>;
+  (options: Parameters): GraphQlResponse;
 
   /**
    * Sends a request based on endpoint options
@@ -17,7 +18,7 @@ export interface graphql {
    * @param {string} route Request method + URL. Example: `'GET /orgs/:org'`
    * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (query: Query, parameters?: Parameters): Promise<GraphQlQueryResponseData>;
+  (query: Query, parameters?: Parameters): GraphQlResponse;
 
   /**
    * Returns a new `endpoint` with updated route and parameters
@@ -31,6 +32,8 @@ export interface graphql {
 }
 
 // export type withCustomRequest = (request: typeof Request) => graphql;
+
+export type GraphQlResponse = ReturnType<typeof graphql>
 
 export type GraphQlQueryResponseData = {
   [key: string]: any;
