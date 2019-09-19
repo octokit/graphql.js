@@ -42,7 +42,7 @@ Load `@octokit/graphql` directly from [cdn.pika.dev](https://cdn.pika.dev)
 Node
 </th><td>
 
-Install with <code>npm install @octokit/graphql</code>
+Install with <code>npm install --save @octokit/graphql</code>
 
 ```js
 const { graphql } = require("@octokit/graphql");
