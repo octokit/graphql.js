@@ -6,16 +6,17 @@ export type Query = string;
 
 export interface graphql {
   /**
-   * Sends a request based on endpoint options
+   * Sends a GraphQL query request based on endpoint options
+   * The GraphQL query must be specified in `options`.
    *
    * @param {object} endpoint Must set `method` and `url`. Plus URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
   (options: Parameters): GraphQlResponse;
 
   /**
-   * Sends a request based on endpoint options
+   * Sends a GraphQL query request based on endpoint options
    *
-   * @param {string} route Request method + URL. Example: `'GET /orgs/:org'`
+   * @param {string} query GraphQL query. Example: `'query { viewer { login } }'`.
    * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
   (query: Query, parameters?: Parameters): GraphQlResponse;
