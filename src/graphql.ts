@@ -1,8 +1,8 @@
 import { request as Request } from "@octokit/request";
 import { GraphqlError } from "./error";
 import {
-  Endpoint,
-  Parameters,
+  EndpointOptions,
+  RequestParameters,
   GraphQlQueryResponse,
   GraphQlQueryResponseData
 } from "./types";
@@ -18,15 +18,15 @@ const NON_VARIABLE_OPTIONS = [
 
 export function graphql(
   request: typeof Request,
-  query: string | Parameters,
-  options?: Parameters
+  query: string | RequestParameters,
+  options?: RequestParameters
 ): Promise<GraphQlQueryResponseData> {
   options =
     typeof query === "string"
       ? (options = Object.assign({ query }, options))
       : (options = query);
 
-  const requestOptions = Object.keys(options).reduce<Endpoint>(
+  const requestOptions = Object.keys(options).reduce<EndpointOptions>(
     (result, key) => {
       if (NON_VARIABLE_OPTIONS.includes(key)) {
         result[key] = options![key];
@@ -40,7 +40,7 @@ export function graphql(
       result.variables[key] = options![key];
       return result;
     },
-    {} as Endpoint
+    {} as EndpointOptions
   );
 
   return request(requestOptions).then(response => {

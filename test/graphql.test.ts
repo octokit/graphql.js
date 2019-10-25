@@ -10,7 +10,7 @@ type RequestOptions = {
   body: string;
 };
 
-import { Parameters } from "../src/types";
+import { RequestParameters } from "../src/types";
 
 describe("graphql()", () => {
   it("is a function", () => {
@@ -131,7 +131,7 @@ describe("graphql()", () => {
       }
     }`;
 
-    const options: Parameters = {
+    const options: RequestParameters = {
       headers: {
         authorization: `token secret123`
       },

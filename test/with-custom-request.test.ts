@@ -3,21 +3,15 @@ import { request } from "@octokit/request";
 
 import { withCustomRequest } from "../src";
 
-type RequestOptions = {
-  body: string;
-};
-
-import { Parameters } from "../src/types";
-
 describe("withCustomRequest()", () => {
   it("README example", () => {
     const myRequest = request.defaults({
       headers: {
-        authorization: 'token secret123',
-        'user-agent': 'test'
+        authorization: "token secret123",
+        "user-agent": "test"
       }
-    })
-    const myGraphql = withCustomRequest(myRequest)
+    });
+    const myGraphql = withCustomRequest(myRequest);
 
     const mockData = {
       repository: {
@@ -69,7 +63,7 @@ describe("withCustomRequest()", () => {
               headers: {
                 accept: "application/vnd.github.v3+json",
                 authorization: "token secret123",
-                "user-agent": 'test'
+                "user-agent": "test"
               }
             }
           )
