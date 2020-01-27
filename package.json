@@ -43,7 +43,7 @@
     "fetch-mock": "^8.0.0",
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
-    "semantic-release": "^16.0.0",
+    "semantic-release": "^17.0.0",
     "semantic-release-plugin-update-version-in-files": "^1.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5"
