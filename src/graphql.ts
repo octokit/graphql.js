@@ -13,7 +13,8 @@ const NON_VARIABLE_OPTIONS = [
   "url",
   "headers",
   "request",
-  "query"
+  "query",
+  "mediaType"
 ];
 
 export function graphql(
