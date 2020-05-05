@@ -16,6 +16,6 @@ export function withDefaults(
 
   return Object.assign(newApi, {
     defaults: withDefaults.bind(null, newRequest),
-    endpoint: Request.endpoint
+    endpoint: Request.endpoint,
   });
 }

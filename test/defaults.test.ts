@@ -14,27 +14,27 @@ describe("graphql.defaults()", () => {
           edges: [
             {
               node: {
-                title: "Foo"
-              }
+                title: "Foo",
+              },
             },
             {
               node: {
-                title: "Bar"
-              }
+                title: "Bar",
+              },
             },
             {
               node: {
-                title: "Baz"
-              }
-            }
-          ]
-        }
-      }
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
     };
 
     const authenticatedGraphql = graphql.defaults({
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
         fetch: fetchMock.sandbox().post(
@@ -42,11 +42,11 @@ describe("graphql.defaults()", () => {
           { data: mockData },
           {
             headers: {
-              authorization: "token secret123"
-            }
+              authorization: "token secret123",
+            },
           }
-        )
-      }
+        ),
+      },
     });
     return authenticatedGraphql(`{
       repository(owner:"octokit", name:"graphql.js") {
@@ -58,7 +58,7 @@ describe("graphql.defaults()", () => {
           }
         }
       }
-    }`).then(result => {
+    }`).then((result) => {
       expect(result).toStrictEqual(mockData);
     });
   });
@@ -70,27 +70,27 @@ describe("graphql.defaults()", () => {
           edges: [
             {
               node: {
-                title: "Foo"
-              }
+                title: "Foo",
+              },
             },
             {
               node: {
-                title: "Bar"
-              }
+                title: "Bar",
+              },
             },
             {
               node: {
-                title: "Baz"
-              }
-            }
-          ]
-        }
-      }
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
     };
 
     const authenticatedGraphql = graphql.defaults({
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
         fetch: fetchMock.sandbox().post(
@@ -98,14 +98,14 @@ describe("graphql.defaults()", () => {
           { data: mockData },
           {
             headers: {
-              authorization: "token secret123"
-            }
+              authorization: "token secret123",
+            },
           }
-        )
-      }
+        ),
+      },
     });
     const acmeGraphql = authenticatedGraphql.defaults({
-      baseUrl: "https://github.acme-inc.com/api"
+      baseUrl: "https://github.acme-inc.com/api",
     });
     return acmeGraphql(`{
       repository(owner:"octokit", name:"graphql.js") {
@@ -117,7 +117,7 @@ describe("graphql.defaults()", () => {
           }
         }
       }
-    }`).then(result => {
+    }`).then((result) => {
       expect(result).toStrictEqual(mockData);
     });
   });
