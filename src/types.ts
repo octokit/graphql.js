@@ -1,7 +1,7 @@
 import {
   EndpointOptions as EndpointOptionsType,
   RequestParameters as RequestParametersType,
-  EndpointInterface
+  EndpointInterface,
 } from "@octokit/types";
 
 import { graphql } from "./graphql";

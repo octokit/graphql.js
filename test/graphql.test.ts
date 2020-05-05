@@ -24,22 +24,22 @@ describe("graphql()", () => {
           edges: [
             {
               node: {
-                title: "Foo"
-              }
+                title: "Foo",
+              },
             },
             {
               node: {
-                title: "Bar"
-              }
+                title: "Bar",
+              },
             },
             {
               node: {
-                title: "Baz"
-              }
-            }
-          ]
-        }
-      }
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
     };
 
     return graphql(
@@ -58,7 +58,7 @@ describe("graphql()", () => {
       `,
       {
         headers: {
-          authorization: `token secret123`
+          authorization: `token secret123`,
         },
         request: {
           fetch: fetchMock.sandbox().post(
@@ -68,13 +68,13 @@ describe("graphql()", () => {
               headers: {
                 accept: "application/vnd.github.v3+json",
                 authorization: "token secret123",
-                "user-agent": userAgent
-              }
+                "user-agent": userAgent,
+              },
             }
-          )
-        }
+          ),
+        },
       }
-    ).then(result => {
+    ).then((result) => {
       expect(result).toStrictEqual(mockData);
     });
   });
@@ -94,7 +94,7 @@ describe("graphql()", () => {
 
     return graphql(query, {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       owner: "octokit",
       repo: "graphql.js",
@@ -108,13 +108,13 @@ describe("graphql()", () => {
               expect(body.query).toEqual(query);
               expect(body.variables).toStrictEqual({
                 owner: "octokit",
-                repo: "graphql.js"
+                repo: "graphql.js",
               });
 
               return { data: {} };
             }
-          )
-      }
+          ),
+      },
     });
   });
 
@@ -133,7 +133,7 @@ describe("graphql()", () => {
 
     const options: RequestParameters = {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       owner: "octokit",
       query,
@@ -148,13 +148,13 @@ describe("graphql()", () => {
               expect(body.query).toEqual(query);
               expect(body.variables).toStrictEqual({
                 owner: "octokit",
-                repo: "graphql.js"
+                repo: "graphql.js",
               });
 
               return { data: {} };
             }
-          )
-      }
+          ),
+      },
     };
 
     return graphql(options);
@@ -165,7 +165,7 @@ describe("graphql()", () => {
 
     return graphql(query, {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
         fetch: fetchMock
@@ -179,8 +179,8 @@ describe("graphql()", () => {
 
               return { data: {} };
             }
-          )
-      }
+          ),
+      },
     });
   });
 });
