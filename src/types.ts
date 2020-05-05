@@ -1,9 +1,13 @@
-import * as OctokitTypes from "@octokit/types";
+import {
+  EndpointOptions as EndpointOptionsType,
+  RequestParameters as RequestParametersType,
+  EndpointInterface
+} from "@octokit/types";
 
 import { graphql } from "./graphql";
 
-export type EndpointOptions = OctokitTypes.EndpointOptions;
-export type RequestParameters = OctokitTypes.RequestParameters;
+export type EndpointOptions = EndpointOptionsType;
+export type RequestParameters = RequestParametersType;
 
 export type Query = string;
 
@@ -14,7 +18,7 @@ export interface graphql {
    *
    * @param {object} endpoint Must set `method` and `url`. Plus URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (options: OctokitTypes.RequestParameters): GraphQlResponse;
+  (options: RequestParameters): GraphQlResponse;
 
   /**
    * Sends a GraphQL query request based on endpoint options
@@ -22,17 +26,17 @@ export interface graphql {
    * @param {string} query GraphQL query. Example: `'query { viewer { login } }'`.
    * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  (query: Query, parameters?: OctokitTypes.RequestParameters): GraphQlResponse;
+  (query: Query, parameters?: RequestParameters): GraphQlResponse;
 
   /**
    * Returns a new `endpoint` with updated route and parameters
    */
-  defaults: (newDefaults: OctokitTypes.RequestParameters) => graphql;
+  defaults: (newDefaults: RequestParameters) => graphql;
 
   /**
    * Octokit endpoint API, see {@link https://github.com/octokit/endpoint.js|@octokit/endpoint}
    */
-  endpoint: OctokitTypes.EndpointInterface;
+  endpoint: EndpointInterface;
 }
 
 // export type withCustomRequest = (request: typeof Request) => graphql;
