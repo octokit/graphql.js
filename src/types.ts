@@ -1,12 +1,14 @@
 import {
-  EndpointOptions as EndpointOptionsType,
+  EndpointOptions,
   RequestParameters as RequestParametersType,
   EndpointInterface,
 } from "@octokit/types";
 
 import { graphql } from "./graphql";
 
-export type EndpointOptions = EndpointOptionsType;
+export type GraphQlEndpointOptions = EndpointOptions & {
+  variables?: { [key: string]: unknown };
+};
 export type RequestParameters = RequestParametersType;
 
 export type Query = string;

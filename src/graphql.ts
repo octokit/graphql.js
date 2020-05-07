@@ -1,7 +1,7 @@
 import { request as Request } from "@octokit/request";
 import { GraphqlError } from "./error";
 import {
-  EndpointOptions,
+  GraphQlEndpointOptions,
   RequestParameters,
   GraphQlQueryResponse,
   GraphQlQueryResponseData,
@@ -14,7 +14,7 @@ const NON_VARIABLE_OPTIONS = [
   "headers",
   "request",
   "query",
-  "mediaType"
+  "mediaType",
 ];
 
 export function graphql(
@@ -27,7 +27,7 @@ export function graphql(
       ? (options = Object.assign({ query }, options))
       : (options = query);
 
-  const requestOptions = Object.keys(options).reduce<EndpointOptions>(
+  const requestOptions = Object.keys(options).reduce<GraphQlEndpointOptions>(
     (result, key) => {
       if (NON_VARIABLE_OPTIONS.includes(key)) {
         result[key] = options![key];
@@ -41,7 +41,7 @@ export function graphql(
       result.variables[key] = options![key];
       return result;
     },
-    {} as EndpointOptions
+    {} as GraphQlEndpointOptions
   );
 
   return request(requestOptions).then((response) => {
