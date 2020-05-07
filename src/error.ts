@@ -1,9 +1,9 @@
-import { EndpointOptions, GraphQlQueryResponse } from "./types";
+import { GraphQlEndpointOptions, GraphQlQueryResponse } from "./types";
 
 export class GraphqlError<T extends GraphQlQueryResponse> extends Error {
-  public request: EndpointOptions;
+  public request: GraphQlEndpointOptions;
   constructor(
-    request: EndpointOptions,
+    request: GraphQlEndpointOptions,
     response: { data: Required<GraphQlQueryResponse> }
   ) {
     const message = response.data.errors[0].message;

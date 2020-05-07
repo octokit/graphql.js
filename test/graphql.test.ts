@@ -1,16 +1,12 @@
 import fetchMock from "fetch-mock";
 import { getUserAgent } from "universal-user-agent";
+import * as OctokitTypes from "@octokit/types";
 
 import { graphql } from "../src";
-
 import { VERSION } from "../src/version";
-const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
-
-type RequestOptions = {
-  body: string;
-};
-
 import { RequestParameters } from "../src/types";
+
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 describe("graphql()", () => {
   it("is a function", () => {
@@ -99,21 +95,16 @@ describe("graphql()", () => {
       owner: "octokit",
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (url, options: RequestOptions) => {
-              const body = JSON.parse(options.body.toString());
-              expect(body.query).toEqual(query);
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", (url, options: OctokitTypes.RequestOptions) => {
+          const body = JSON.parse(options.body);
+          expect(body.query).toEqual(query);
+          expect(body.variables).toStrictEqual({
+            owner: "octokit",
+            repo: "graphql.js",
+          });
 
-              return { data: {} };
-            }
-          ),
+          return { data: {} };
+        }),
       },
     });
   });
@@ -139,21 +130,16 @@ describe("graphql()", () => {
       query,
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (url, options: RequestOptions) => {
-              const body = JSON.parse(options.body.toString());
-              expect(body.query).toEqual(query);
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", (url, options: OctokitTypes.RequestOptions) => {
+          const body = JSON.parse(options.body);
+          expect(body.query).toEqual(query);
+          expect(body.variables).toStrictEqual({
+            owner: "octokit",
+            repo: "graphql.js",
+          });
 
-              return { data: {} };
-            }
-          ),
+          return { data: {} };
+        }),
       },
     };
 
@@ -168,18 +154,33 @@ describe("graphql()", () => {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (url, options: RequestOptions) => {
-              const body = JSON.parse(options.body.toString());
-              expect(body.query).toEqual(query);
-              expect(body.variables).toEqual(undefined);
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", (url, options: OctokitTypes.RequestOptions) => {
+          const body = JSON.parse(options.body);
+          expect(body.query).toEqual(query);
+          expect(body.variables).toEqual(undefined);
 
-              return { data: {} };
-            }
-          ),
+          return { data: {} };
+        }),
+      },
+    });
+  });
+
+  it("MediaType previews are added to header", () => {
+    const query = `{ viewer { login } }`;
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`,
+      },
+      owner: "octokit",
+      repo: "graphql.js",
+      mediaType: { previews: ["antiope", "testpkg"] },
+      request: {
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", (url, options: OctokitTypes.RequestOptions) => {
+          expect(options.headers.accept).toContain("antiope-preview");
+          expect(options.headers.accept).toContain("testpkg-preview");
+          return { data: {} };
+        }),
       },
     });
   });
