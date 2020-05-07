@@ -1,11 +1,12 @@
 import fetchMock from "fetch-mock";
 import { getUserAgent } from "universal-user-agent";
 import * as OctokitTypes from "@octokit/types";
+
 import { graphql } from "../src";
 import { VERSION } from "../src/version";
-const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
-
 import { RequestParameters } from "../src/types";
+
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 describe("graphql()", () => {
   it("is a function", () => {
