@@ -4,7 +4,7 @@ import {
   EndpointOptions,
   RequestParameters,
   GraphQlQueryResponse,
-  GraphQlQueryResponseData
+  GraphQlQueryResponseData,
 } from "./types";
 
 const NON_VARIABLE_OPTIONS = [
@@ -44,10 +44,10 @@ export function graphql(
     {} as EndpointOptions
   );
 
-  return request(requestOptions).then(response => {
+  return request(requestOptions).then((response) => {
     if (response.data.errors) {
       throw new GraphqlError(requestOptions, {
-        data: response.data as Required<GraphQlQueryResponse>
+        data: response.data as Required<GraphQlQueryResponse>,
       });
     }
 

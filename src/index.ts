@@ -7,15 +7,15 @@ import { withDefaults } from "./with-defaults";
 
 export const graphql = withDefaults(request, {
   headers: {
-    "user-agent": `octokit-graphql.js/${VERSION} ${getUserAgent()}`
+    "user-agent": `octokit-graphql.js/${VERSION} ${getUserAgent()}`,
   },
   method: "POST",
-  url: "/graphql"
+  url: "/graphql",
 });
 
 export function withCustomRequest(customRequest: typeof request) {
   return withDefaults(customRequest, {
     method: "POST",
-    url: "/graphql"
+    url: "/graphql",
   });
 }

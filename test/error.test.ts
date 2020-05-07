@@ -16,29 +16,29 @@ describe("errors", () => {
           locations: [
             {
               column: 5,
-              line: 3
-            }
+              line: 3,
+            },
           ],
-          message: "Field 'bioHtml' doesn't exist on type 'User'"
-        }
-      ]
+          message: "Field 'bioHtml' doesn't exist on type 'User'",
+        },
+      ],
     };
 
     return graphql(query, {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", mockResponse)
-      }
+          .post("https://api.github.com/graphql", mockResponse),
+      },
     })
-      .then(result => {
+      .then((result) => {
         throw new Error("Should not resolve");
       })
 
-      .catch(error => {
+      .catch((error) => {
         expect(error.message).toEqual(
           "Field 'bioHtml' doesn't exist on type 'User'"
         );
@@ -69,38 +69,38 @@ describe("errors", () => {
       data: {
         repository: {
           name: "probot",
-          ref: null
-        }
+          ref: null,
+        },
       },
       errors: [
         {
           locations: [
             {
               column: 11,
-              line: 7
-            }
+              line: 7,
+            },
           ],
           message: "`invalid cursor` does not appear to be a valid cursor.",
           path: ["repository", "ref", "target", "history"],
-          type: "INVALID_CURSOR_ARGUMENTS"
-        }
-      ]
+          type: "INVALID_CURSOR_ARGUMENTS",
+        },
+      ],
     };
 
     return graphql(query, {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", mockResponse)
-      }
+          .post("https://api.github.com/graphql", mockResponse),
+      },
     })
-      .then(result => {
+      .then((result) => {
         throw new Error("Should not resolve");
       })
-      .catch(error => {
+      .catch((error) => {
         expect(error.message).toEqual(
           "`invalid cursor` does not appear to be a valid cursor."
         );
@@ -119,16 +119,16 @@ describe("errors", () => {
 
     return graphql(query, {
       headers: {
-        authorization: `token secret123`
+        authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", 500)
-      }
+        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", 500),
+      },
     })
-      .then(result => {
+      .then((result) => {
         throw new Error("Should not resolve");
       })
-      .catch(error => {
+      .catch((error) => {
         expect(error.status).toEqual(500);
       });
   });

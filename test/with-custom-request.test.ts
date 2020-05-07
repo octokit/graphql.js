@@ -8,8 +8,8 @@ describe("withCustomRequest()", () => {
     const myRequest = request.defaults({
       headers: {
         authorization: "token secret123",
-        "user-agent": "test"
-      }
+        "user-agent": "test",
+      },
     });
     const myGraphql = withCustomRequest(myRequest);
 
@@ -19,22 +19,22 @@ describe("withCustomRequest()", () => {
           edges: [
             {
               node: {
-                title: "Foo"
-              }
+                title: "Foo",
+              },
             },
             {
               node: {
-                title: "Bar"
-              }
+                title: "Bar",
+              },
             },
             {
               node: {
-                title: "Baz"
-              }
-            }
-          ]
-        }
-      }
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
     };
 
     return myGraphql(
@@ -53,7 +53,7 @@ describe("withCustomRequest()", () => {
       `,
       {
         headers: {
-          authorization: `token secret123`
+          authorization: `token secret123`,
         },
         request: {
           fetch: fetchMock.sandbox().post(
@@ -63,13 +63,13 @@ describe("withCustomRequest()", () => {
               headers: {
                 accept: "application/vnd.github.v3+json",
                 authorization: "token secret123",
-                "user-agent": "test"
-              }
+                "user-agent": "test",
+              },
             }
-          )
-        }
+          ),
+        },
       }
-    ).then(result => {
+    ).then((result) => {
       expect(result).toStrictEqual(mockData);
     });
   });
