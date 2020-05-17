@@ -47,7 +47,7 @@ export type GraphQlResponse = ReturnType<typeof graphql>;
 
 export type GraphQlQueryResponseData = {
   [key: string]: any;
-} | null;
+};
 
 export type GraphQlQueryResponse = {
   data: GraphQlQueryResponseData;
