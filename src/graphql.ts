@@ -17,11 +17,11 @@ const NON_VARIABLE_OPTIONS = [
   "mediaType",
 ];
 
-export function graphql(
+export function graphql<ResponseData = GraphQlQueryResponseData>(
   request: typeof Request,
   query: string | RequestParameters,
   options?: RequestParameters
-): Promise<GraphQlQueryResponseData> {
+): Promise<ResponseData> {
   options =
     typeof query === "string"
       ? (options = Object.assign({ query }, options))
@@ -47,7 +47,7 @@ export function graphql(
   return request(requestOptions).then((response) => {
     if (response.data.errors) {
       throw new GraphqlError(requestOptions, {
-        data: response.data as Required<GraphQlQueryResponse>,
+        data: response.data as Required<GraphQlQueryResponse<ResponseData>>,
       });
     }
 

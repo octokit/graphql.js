@@ -7,11 +7,11 @@ export function withDefaults(
   newDefaults: RequestParameters
 ): ApiInterface {
   const newRequest = request.defaults(newDefaults);
-  const newApi = (
+  const newApi = <ResponseData>(
     query: Query | RequestParameters,
     options?: RequestParameters
   ) => {
-    return graphql(newRequest, query, options);
+    return graphql<ResponseData>(newRequest, query, options);
   };
 
   return Object.assign(newApi, {
