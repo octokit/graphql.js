@@ -94,7 +94,12 @@ describe("errors", () => {
       request: {
         fetch: fetchMock
           .sandbox()
-          .post("https://api.github.com/graphql", mockResponse),
+          .post("https://api.github.com/graphql", { 
+            body: mockResponse,
+            headers: {
+              'x-github-request-id': 'C5E6:259A:1351B40:2E88B87:5F1F9C41'
+            }
+          }),
       },
     })
       .then((result) => {
@@ -107,6 +112,8 @@ describe("errors", () => {
         expect(error.errors).toStrictEqual(mockResponse.errors);
         expect(error.request.query).toEqual(query);
         expect(error.data).toStrictEqual(mockResponse.data);
+        expect(error.headers).toHaveProperty('x-github-request-id');
+        expect(error.headers['x-github-request-id']).toEqual('C5E6:259A:1351B40:2E88B87:5F1F9C41');
       });
   });
 
