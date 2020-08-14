@@ -138,29 +138,34 @@ const { repository } = await graphqlWithAuth(
 ⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
 
 ```js
-const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
-    repository(owner:$owner, name:$repo) {
-      issues(last:$num) {
-        edges {
-          node {
-            title
+const { lastIssues } = await graphql(
+  `
+    query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+      repository(owner: $owner, name: $repo) {
+        issues(last: $num) {
+          edges {
+            node {
+              title
+            }
           }
         }
       }
     }
-  }`, {
-    owner: 'octokit',
-    repo: 'graphql.js',
+  `,
+  {
+    owner: "octokit",
+    repo: "graphql.js",
     headers: {
-      authorization: `token secret123`
-    }
-})
+      authorization: `token secret123`,
+    },
+  }
+);
 ```
 
 ### Pass query together with headers and variables
 
 ```js
-const { graphql } = require('@octokit/graphql')
+const { graphql } = require("@octokit/graphql");
 const { lastIssues } = await graphql({
   query: `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner:$owner, name:$repo) {
@@ -173,12 +178,12 @@ const { lastIssues } = await graphql({
       }
     }
   }`,
-  owner: 'octokit',
-  repo: 'graphql.js',
+  owner: "octokit",
+  repo: "graphql.js",
   headers: {
-    authorization: `token secret123`
-  }
-})
+    authorization: `token secret123`,
+  },
+});
 ```
 
 ### Use with GitHub Enterprise

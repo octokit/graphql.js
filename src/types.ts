@@ -28,7 +28,9 @@ export interface graphql {
    * @param {string} query GraphQL query. Example: `'query { viewer { login } }'`.
    * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
    */
-  <ResponseData>(query: Query, parameters?: RequestParameters): GraphQlResponse<ResponseData>;
+  <ResponseData>(query: Query, parameters?: RequestParameters): GraphQlResponse<
+    ResponseData
+  >;
 
   /**
    * Returns a new `endpoint` with updated route and parameters
@@ -43,7 +45,7 @@ export interface graphql {
 
 // export type withCustomRequest = (request: typeof Request) => graphql;
 
-export type GraphQlResponse<ResponseData> = Promise<ResponseData>
+export type GraphQlResponse<ResponseData> = Promise<ResponseData>;
 
 export type GraphQlQueryResponseData = {
   [key: string]: any;

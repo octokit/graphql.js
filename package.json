@@ -9,6 +9,7 @@
     "build": "pika build",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
+    "pretest": "npm run lint -s",
     "test": "jest --coverage"
   },
   "repository": {

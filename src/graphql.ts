@@ -49,7 +49,7 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
     if (response.data.errors) {
       const headers: ResponseHeaders = {};
       for (const key of Object.keys(response.headers)) {
-          headers[key] = response.headers[key]
+        headers[key] = response.headers[key];
       }
 
       throw new GraphqlError(requestOptions, {
