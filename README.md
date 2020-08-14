@@ -103,7 +103,7 @@ const { repository } = await graphqlWithAuth(`
 `);
 ```
 
-For more complex authentication strategies such as GitHub Apps or Basic, we recommend the according authentication library exported by [`@octokit/auth`](https://github.com/octokit/auth.js).
+For more complex authentication strategies such as GitHub Apps or Basic, we recommend the according authentication library exported by [`@octokit/auth-app`](https://github.com/octokit/auth-app.js).
 
 ```js
 const { createAppAuth } = require("@octokit/auth-app");
