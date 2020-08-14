@@ -150,11 +150,10 @@ const { lastIssues } = await graphql(`query lastIssues($owner: String!, $repo: S
     }
   }`, {
     owner: 'octokit',
-    repo: 'graphql.js'
+    repo: 'graphql.js',
     headers: {
       authorization: `token secret123`
     }
-  }
 })
 ```
 
@@ -175,7 +174,7 @@ const { lastIssues } = await graphql({
     }
   }`,
   owner: 'octokit',
-  repo: 'graphql.js'
+  repo: 'graphql.js',
   headers: {
     authorization: `token secret123`
   }
