@@ -121,4 +121,30 @@ describe("graphql.defaults()", () => {
       expect(result).toStrictEqual(mockData);
     });
   });
+
+  it("handle baseUrl set with /api/v3 suffix", () => {
+    const ghesGraphQl = graphql.defaults({
+      baseUrl: "https://github.acme-inc.com/api/v3",
+      headers: {
+        authorization: `token secret123`,
+      },
+      request: {
+        fetch: fetchMock.sandbox().post(
+          "https://github.acme-inc.com/api/graphql",
+          { data: { ok: true } },
+          {
+            headers: {
+              authorization: "token secret123",
+            },
+          }
+        ),
+      },
+    });
+
+    return ghesGraphQl(`query {
+      viewer {
+        login
+      }
+    }`);
+  });
 });
