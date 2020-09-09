@@ -18,6 +18,8 @@ const NON_VARIABLE_OPTIONS = [
   "mediaType",
 ];
 
+const GHES_V3_SUFFIX_REGEX = /\/api\/v3$/;
+
 export function graphql<ResponseData = GraphQlQueryResponseData>(
   request: typeof Request,
   query: string | RequestParameters,
@@ -44,6 +46,13 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
     },
     {} as GraphQlEndpointOptions
   );
+
+  // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
+  // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
+  const baseUrl = options.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+  if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+    requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
+  }
 
   return request(requestOptions).then((response) => {
     if (response.data.errors) {
