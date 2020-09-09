@@ -18,7 +18,7 @@ const NON_VARIABLE_OPTIONS = [
   "mediaType",
 ];
 
-const GHES_V3_SUFFIX_REGEX = /\/api\/v3$/;
+const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 
 export function graphql<ResponseData = GraphQlQueryResponseData>(
   request: typeof Request,
