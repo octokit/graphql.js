@@ -122,7 +122,7 @@ describe("graphql.defaults()", () => {
     });
   });
 
-  it.only("handle baseUrl set with /api/v3 suffix", () => {
+  it("handle baseUrl set with /api/v3 suffix", () => {
     const ghesGraphQl = graphql.defaults({
       baseUrl: "https://github.acme-inc.com/api/v3",
       headers: {
