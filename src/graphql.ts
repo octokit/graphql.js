@@ -25,31 +25,34 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
   query: string | RequestParameters,
   options?: RequestParameters
 ): Promise<ResponseData> {
-  options =
-    typeof query === "string"
-      ? (options = Object.assign({ query }, options))
-      : (options = query);
+  if (typeof query === "string" && options && "query" in options) {
+    return Promise.reject(
+      new Error(`[@octokit/graphql] "query" cannot be used as variable name`)
+    );
+  }
 
-  const requestOptions = Object.keys(options).reduce<GraphQlEndpointOptions>(
-    (result, key) => {
-      if (NON_VARIABLE_OPTIONS.includes(key)) {
-        result[key] = options![key];
-        return result;
-      }
+  const parsedOptions =
+    typeof query === "string" ? Object.assign({ query }, options) : query;
 
-      if (!result.variables) {
-        result.variables = {};
-      }
-
-      result.variables[key] = options![key];
+  const requestOptions = Object.keys(parsedOptions).reduce<
+    GraphQlEndpointOptions
+  >((result, key) => {
+    if (NON_VARIABLE_OPTIONS.includes(key)) {
+      result[key] = parsedOptions[key];
       return result;
-    },
-    {} as GraphQlEndpointOptions
-  );
+    }
+
+    if (!result.variables) {
+      result.variables = {};
+    }
+
+    result.variables[key] = parsedOptions[key];
+    return result;
+  }, {} as GraphQlEndpointOptions);
 
   // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
   // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
-  const baseUrl = options.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+  const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
   if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
     requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
   }
