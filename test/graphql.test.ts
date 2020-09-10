@@ -204,4 +204,31 @@ describe("graphql()", () => {
       },
     });
   });
+
+  it("query variable (#166)", () => {
+    expect.assertions(1);
+
+    const query = `query search($query: String!) {
+      search(query: $query, first: 10, type: ISSUE) {
+        edges {
+          node {
+            ... on PullRequest {
+              title
+            }
+          }
+        }
+      }
+    }`;
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`,
+      },
+      query: "test",
+    }).catch((error) => {
+      expect(error.message).toEqual(
+        `[@octokit/graphql] "query" cannot be used as variable name`
+      );
+    });
+  });
 });
