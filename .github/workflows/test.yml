@@ -2,28 +2,17 @@ name: Test
 "on":
   push:
     branches:
-      - master
-      - dependabot/npm_and_yarn/**
-  pull_request:
-    types:
-      - opened
-      - synchronize
+      - 195/import-error-on-windows
 jobs:
   test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version:
-          - 10
-          - 12
-          - 14
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "Use Node.js ${{ matrix.node_version }}"
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: "${{ matrix.node_version }}"
-      - name: Install
-        run: npm ci
-      - name: Test
-        run: npm test
+          node-version: 10.19.0
+      - run: npm ci
+      - run: npm run build
+      - run: node reproduce-195.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
