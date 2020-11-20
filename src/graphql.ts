@@ -34,9 +34,9 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
   const parsedOptions =
     typeof query === "string" ? Object.assign({ query }, options) : query;
 
-  const requestOptions = Object.keys(parsedOptions).reduce<
-    GraphQlEndpointOptions
-  >((result, key) => {
+  const requestOptions = Object.keys(
+    parsedOptions
+  ).reduce<GraphQlEndpointOptions>((result, key) => {
     if (NON_VARIABLE_OPTIONS.includes(key)) {
       result[key] = parsedOptions[key];
       return result;
