@@ -14,6 +14,8 @@
   - [Pass query together with headers and variables](#pass-query-together-with-headers-and-variables)
   - [Use with GitHub Enterprise](#use-with-github-enterprise)
   - [Use custom `@octokit/request` instance](#use-custom-octokitrequest-instance)
+- [TypeScript](#typescript)
+  - [Additional Types](#additional-types)
 - [Errors](#errors)
 - [Partial responses](#partial-responses)
 - [Writing tests](#writing-tests)
