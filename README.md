@@ -35,7 +35,7 @@ Load `@octokit/graphql` directly from [cdn.skypack.dev](https://cdn.skypack.dev)
 
 ```html
 <script type="module">
-  import { endpoint } from "https://cdn.skypack.dev/@octokit/graphql";
+  import { graphql } from "https://cdn.skypack.dev/@octokit/graphql";
 </script>
 ```
 
