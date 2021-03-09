@@ -231,4 +231,44 @@ describe("graphql()", () => {
       );
     });
   });
+
+  it("url variable (#264)", () => {
+    expect.assertions(1);
+
+    const query = `query GetCommitStatus($url: URI!) {
+      resource(url: $url) {
+        ... on Commit {
+          status {
+            state
+          }
+        }
+      }
+    }`;
+
+    return graphql(query, {
+      url: "https://example.com",
+    }).catch((error) => {
+      expect(error.message).toEqual(
+        `[@octokit/graphql] "url" cannot be used as variable name`
+      );
+    });
+  });
+
+  it("method variable", () => {
+    expect.assertions(1);
+
+    const query = `query($method:String!){
+      search(query:$method,type:ISSUE) {
+        codeCount
+      }
+    }`;
+
+    return graphql(query, {
+      method: "test",
+    }).catch((error) => {
+      expect(error.message).toEqual(
+        `[@octokit/graphql] "method" cannot be used as variable name`
+      );
+    });
+  });
 });

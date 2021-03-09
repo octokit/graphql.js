@@ -18,6 +18,8 @@ const NON_VARIABLE_OPTIONS = [
   "mediaType",
 ];
 
+const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
+
 const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 
 export function graphql<ResponseData = GraphQlQueryResponseData>(
@@ -25,10 +27,20 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
   query: string | RequestParameters,
   options?: RequestParameters
 ): Promise<ResponseData> {
-  if (typeof query === "string" && options && "query" in options) {
-    return Promise.reject(
-      new Error(`[@octokit/graphql] "query" cannot be used as variable name`)
-    );
+  if (options) {
+    if (typeof query === "string" && "query" in options) {
+      return Promise.reject(
+        new Error(`[@octokit/graphql] "query" cannot be used as variable name`)
+      );
+    }
+
+    for (const key in options) {
+      if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
+
+      return Promise.reject(
+        new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`)
+      );
+    }
   }
 
   const parsedOptions =
