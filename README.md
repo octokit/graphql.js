@@ -258,7 +258,7 @@ await myGraphql(`
 Additionally, `GraphQlQueryResponseData` has been exposed to users:
 
 ```ts
-import type { GraphQlQueryResponseData } from "octokit/graphql";
+import type { GraphQlQueryResponseData } from "@octokit/graphql";
 ```
 
 ## Errors
