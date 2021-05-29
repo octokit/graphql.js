@@ -3,7 +3,6 @@ name: Test
   push:
     branches:
       - master
-      - dependabot/npm_and_yarn/**
   pull_request:
     types:
       - opened
