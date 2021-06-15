@@ -114,6 +114,52 @@ describe("graphql()", () => {
     });
   });
 
+  it("Pass headers together with variables as 2nd argument", () => {
+    const query = `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+      repository(owner:$owner, name:$repo) {
+        issues(last:$num) {
+          edges {
+            node {
+              title
+            }
+          }
+        }
+      }
+    }`;
+
+    const options: RequestParameters = {
+      headers: {
+        authorization: `token secret123`,
+        "x-custom": "value",
+      },
+      owner: "octokit",
+      repo: "graphql.js",
+      request: {
+        fetch: fetchMock
+          .sandbox()
+          .post(
+            "https://api.github.com/graphql",
+            (url, options: OctokitTypes.RequestOptions) => {
+              const body = JSON.parse(options.body);
+              expect(body.query).toEqual(query);
+              expect(body.variables).toStrictEqual({
+                owner: "octokit",
+                repo: "graphql.js",
+              });
+              expect(options.headers["authorization"]).toEqual(
+                "token secret123"
+              );
+              expect(options.headers["x-custom"]).toEqual("value");
+
+              return { data: {} };
+            }
+          ),
+      },
+    };
+
+    return graphql(query, options);
+  });
+
   it("Pass query together with headers and variables", () => {
     const query = `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
       repository(owner:$owner, name:$repo) {
