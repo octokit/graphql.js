@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "${{ matrix.node_version }}"
+          cache: npm
       - name: Install
         run: npm ci
       - name: Test
