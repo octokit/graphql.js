@@ -14,6 +14,7 @@ export const graphql = withDefaults(request, {
 });
 
 export { GraphQlQueryResponseData } from "./types";
+export { GraphqlResponseError } from './error';
 
 export function withCustomRequest(customRequest: typeof request) {
   return withDefaults(customRequest, {

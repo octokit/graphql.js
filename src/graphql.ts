@@ -1,6 +1,6 @@
 import { request as Request } from "@octokit/request";
 import { ResponseHeaders } from "@octokit/types";
-import { GraphqlError } from "./error";
+import { GraphqlResponseError } from "./error";
 import {
   GraphQlEndpointOptions,
   RequestParameters,
@@ -76,10 +76,8 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
         headers[key] = response.headers[key];
       }
 
-      throw new GraphqlError(requestOptions, {
-        headers,
-        data: response.data as Required<GraphQlQueryResponse<ResponseData>>,
-      });
+      throw new GraphqlResponseError(requestOptions, headers,
+          response.data as Required<GraphQlQueryResponse<ResponseData>>);
     }
 
     return response.data.data;

@@ -263,10 +263,11 @@ import type { GraphQlQueryResponseData } from "@octokit/graphql";
 
 ## Errors
 
-In case of a GraphQL error, `error.message` is set to the first error from the response’s `errors` array. All errors can be accessed at `error.errors`. `error.request` has the request options such as query, variables and headers set for easier debugging.
+In case of a GraphQL error, `error.message` is set to a combined message describing all errors returned by the endpoint.
+All errors can be accessed at `error.errors`. `error.request` has the request options such as query, variables and headers set for easier debugging.
 
 ```js
-let { graphql } = require("@octokit/graphql");
+let { graphql, GraphqlResponseError } = require("@octokit/graphql");
 graphqlt = graphql.defaults({
   headers: {
     authorization: `token secret123`,
@@ -281,8 +282,16 @@ const query = `{
 try {
   const result = await graphql(query);
 } catch (error) {
-  // server responds with
-  // {
+  if (error instanceof GraphqlResponseError) {
+    // do something with the error, allowing you to detect a graphql response error,
+    // compared to accidentally catching unrelated errors.
+  }
+
+  // server responds with an object like the following (as an example)
+  // class GraphqlResponseError {
+  //  "headers": {
+  //    "status": "403",
+  //  },
   //  "data": null,
   //  "errors": [{
   //   "message": "Field 'bioHtml' doesn't exist on type 'User'",
