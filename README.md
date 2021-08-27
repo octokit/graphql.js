@@ -285,25 +285,27 @@ try {
   if (error instanceof GraphqlResponseError) {
     // do something with the error, allowing you to detect a graphql response error,
     // compared to accidentally catching unrelated errors.
+
+    // server responds with an object like the following (as an example)
+    // class GraphqlResponseError {
+    //  "headers": {
+    //    "status": "403",
+    //  },
+    //  "data": null,
+    //  "errors": [{
+    //   "message": "Field 'bioHtml' doesn't exist on type 'User'",
+    //   "locations": [{
+    //    "line": 3,
+    //    "column": 5
+    //   }]
+    //  }]
+    // }
+
+    console.log("Request failed:", error.request); // { query, variables: {}, headers: { authorization: 'token secret123' } }
+    console.log(error.message); // Field 'bioHtml' doesn't exist on type 'User' 
+  } else {
+    // handle non-GraphQL error
   }
-
-  // server responds with an object like the following (as an example)
-  // class GraphqlResponseError {
-  //  "headers": {
-  //    "status": "403",
-  //  },
-  //  "data": null,
-  //  "errors": [{
-  //   "message": "Field 'bioHtml' doesn't exist on type 'User'",
-  //   "locations": [{
-  //    "line": 3,
-  //    "column": 5
-  //   }]
-  //  }]
-  // }
-
-  console.log("Request failed:", error.request); // { query, variables: {}, headers: { authorization: 'token secret123' } }
-  console.log(error.message); // Field 'bioHtml' doesn't exist on type 'User'
 }
 ```
 
