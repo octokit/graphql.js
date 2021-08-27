@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock";
 
-import { graphql } from "../src";
+import { graphql, GraphqlResponseError } from "../src";
 
 describe("errors", () => {
   it("Invalid query", () => {
@@ -40,10 +40,52 @@ describe("errors", () => {
 
       .catch((error) => {
         expect(error.message).toEqual(
-          "Field 'bioHtml' doesn't exist on type 'User'"
+          "Request failed due to following response errors:\n" +
+            " - Field 'bioHtml' doesn't exist on type 'User'"
         );
         expect(error.errors).toStrictEqual(mockResponse.errors);
         expect(error.request.query).toEqual(query);
+      });
+  });
+
+  it("Should be able check if an error is instance of a GraphQL response error", () => {
+    const query = `{
+      repository {
+        name
+      }
+    }`;
+
+    const mockResponse = {
+      data: null,
+      errors: [
+        {
+          locations: [
+            {
+              column: 5,
+              line: 3,
+            },
+          ],
+          message: "Some error message",
+        },
+      ],
+    };
+
+    return graphql(query, {
+      headers: {
+        authorization: `token secret123`,
+      },
+      request: {
+        fetch: fetchMock
+          .sandbox()
+          .post("https://api.github.com/graphql", mockResponse),
+      },
+    })
+      .then((result) => {
+        throw new Error("Should not resolve");
+      })
+
+      .catch((error) => {
+        expect(error instanceof GraphqlResponseError).toBe(true);
       });
   });
 
@@ -105,7 +147,8 @@ describe("errors", () => {
       })
       .catch((error) => {
         expect(error.message).toEqual(
-          "`invalid cursor` does not appear to be a valid cursor."
+          "Request failed due to following response errors:\n" +
+            " - `invalid cursor` does not appear to be a valid cursor."
         );
         expect(error.errors).toStrictEqual(mockResponse.errors);
         expect(error.request.query).toEqual(query);
@@ -119,7 +162,7 @@ describe("errors", () => {
 
   it("Should throw for server error", () => {
     const query = `{
-      viewer { 
+      viewer {
         login
       }
     }`;
