@@ -12,7 +12,7 @@ function _buildMessageForResponseErrors(
   data: ServerResponseData<unknown>
 ): string {
   return (
-    `Request failed due to following response errors: ` +
+    `Request failed due to following response errors:\n` +
     data.errors.map((e) => ` - ${e.message}`).join("\n")
   );
 }
