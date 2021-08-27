@@ -302,7 +302,7 @@ try {
     // }
 
     console.log("Request failed:", error.request); // { query, variables: {}, headers: { authorization: 'token secret123' } }
-    console.log(error.message); // Field 'bioHtml' doesn't exist on type 'User' 
+    console.log(error.message); // Field 'bioHtml' doesn't exist on type 'User'
   } else {
     // handle non-GraphQL error
   }
