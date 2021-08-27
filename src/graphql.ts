@@ -76,8 +76,11 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
         headers[key] = response.headers[key];
       }
 
-      throw new GraphqlResponseError(requestOptions, headers,
-          response.data as Required<GraphQlQueryResponse<ResponseData>>);
+      throw new GraphqlResponseError(
+        requestOptions,
+        headers,
+        response.data as Required<GraphQlQueryResponse<ResponseData>>
+      );
     }
 
     return response.data.data;
