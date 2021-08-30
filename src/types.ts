@@ -56,6 +56,7 @@ export type GraphQlQueryResponse<ResponseData> = {
   data: ResponseData;
   errors?: [
     {
+      type: string;
       message: string;
       path: [string];
       extensions: { [key: string]: any };
