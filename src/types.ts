@@ -56,6 +56,7 @@ export type GraphQlQueryResponse<ResponseData> = {
   data: ResponseData;
   errors?: [
     {
+      // https://github.com/octokit/graphql.js/pull/314
       type: string;
       message: string;
       path: [string];
