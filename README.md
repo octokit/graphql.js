@@ -268,7 +268,7 @@ All errors can be accessed at `error.errors`. `error.request` has the request op
 
 ```js
 let { graphql, GraphqlResponseError } = require("@octokit/graphql");
-graphqlt = graphql.defaults({
+graphql = graphql.defaults({
   headers: {
     authorization: `token secret123`,
   },
