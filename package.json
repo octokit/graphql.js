@@ -6,7 +6,7 @@
   },
   "description": "GitHub GraphQL API client for browsers and Node",
   "scripts": {
-    "build": "pika build",
+    "build": "pika-pack build",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "pretest": "npm run lint -s",
