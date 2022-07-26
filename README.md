@@ -110,7 +110,7 @@ For more complex authentication strategies such as GitHub Apps or Basic, we reco
 ```js
 const { createAppAuth } = require("@octokit/auth-app");
 const auth = createAppAuth({
-  id: process.env.APP_ID,
+  appId: process.env.APP_ID,
   privateKey: process.env.PRIVATE_KEY,
   installationId: 123,
 });
