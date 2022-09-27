@@ -1,6 +1,10 @@
 import fetchMock from "fetch-mock";
+import { getUserAgent } from "universal-user-agent";
 
+import { VERSION } from "../src/version";
 import { graphql } from "../src";
+
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 describe("graphql.defaults()", () => {
   it("is a function", () => {
@@ -199,8 +203,7 @@ describe("graphql.defaults()", () => {
       headers: {
         accept: "application/vnd.github.v3+json",
         authorization: "token secret123",
-        "user-agent":
-          "octokit-graphql.js/0.0.0-development Node.js/18.9.0 (darwin; arm64)",
+        "user-agent": userAgent,
       },
     });
   });
