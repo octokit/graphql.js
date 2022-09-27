@@ -147,4 +147,61 @@ describe("graphql.defaults()", () => {
       }
     }`);
   });
+
+  it("set defaults on .endpoint", () => {
+    const mockData = {
+      repository: {
+        issues: {
+          edges: [
+            {
+              node: {
+                title: "Foo",
+              },
+            },
+            {
+              node: {
+                title: "Bar",
+              },
+            },
+            {
+              node: {
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
+    };
+
+    const authenticatedGraphql = graphql.defaults({
+      headers: {
+        authorization: `token secret123`,
+      },
+      request: {
+        fetch: fetchMock.sandbox().post(
+          "https://github.acme-inc.com/api/graphql",
+          { data: mockData },
+          {
+            headers: {
+              authorization: "token secret123",
+            },
+          }
+        ),
+      },
+    });
+
+    const { request: _request, ...requestOptions } =
+      // @ts-expect-error - TODO: expets to set { url } but it really shouldn't
+      authenticatedGraphql.endpoint();
+    expect(requestOptions).toStrictEqual({
+      method: "POST",
+      url: "https://api.github.com/graphql",
+      headers: {
+        accept: "application/vnd.github.v3+json",
+        authorization: "token secret123",
+        "user-agent":
+          "octokit-graphql.js/0.0.0-development Node.js/18.9.0 (darwin; arm64)",
+      },
+    });
+  });
 });
