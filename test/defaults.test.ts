@@ -195,7 +195,7 @@ describe("graphql.defaults()", () => {
     });
 
     const { request: _request, ...requestOptions } =
-      // @ts-expect-error - TODO: expets to set { url } but it really shouldn't
+      // @ts-expect-error - TODO: expects to set { url } but it really shouldn't
       authenticatedGraphql.endpoint();
     expect(requestOptions).toStrictEqual({
       method: "POST",
