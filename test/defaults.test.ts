@@ -1,6 +1,10 @@
 import fetchMock from "fetch-mock";
+import { getUserAgent } from "universal-user-agent";
 
+import { VERSION } from "../src/version";
 import { graphql } from "../src";
+
+const userAgent = `octokit-graphql.js/${VERSION} ${getUserAgent()}`;
 
 describe("graphql.defaults()", () => {
   it("is a function", () => {
@@ -146,5 +150,61 @@ describe("graphql.defaults()", () => {
         login
       }
     }`);
+  });
+
+  it("set defaults on .endpoint", () => {
+    const mockData = {
+      repository: {
+        issues: {
+          edges: [
+            {
+              node: {
+                title: "Foo",
+              },
+            },
+            {
+              node: {
+                title: "Bar",
+              },
+            },
+            {
+              node: {
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
+    };
+
+    const authenticatedGraphql = graphql.defaults({
+      headers: {
+        authorization: `token secret123`,
+      },
+      request: {
+        fetch: fetchMock.sandbox().post(
+          "https://github.acme-inc.com/api/graphql",
+          { data: mockData },
+          {
+            headers: {
+              authorization: "token secret123",
+            },
+          }
+        ),
+      },
+    });
+
+    const { request: _request, ...requestOptions } =
+      // @ts-expect-error - TODO: expects to set { url } but it really shouldn't
+      authenticatedGraphql.endpoint();
+    expect(requestOptions).toStrictEqual({
+      method: "POST",
+      url: "https://api.github.com/graphql",
+      headers: {
+        accept: "application/vnd.github.v3+json",
+        authorization: "token secret123",
+        "user-agent": userAgent,
+      },
+    });
   });
 });
