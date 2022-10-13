@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@octokit/request": "^6.0.0",
-    "@octokit/types": "^7.0.0",
+    "@octokit/types": "^8.0.0",
     "universal-user-agent": "^6.0.0"
   },
   "devDependencies": {
