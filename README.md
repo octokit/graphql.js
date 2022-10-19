@@ -222,7 +222,7 @@ const { withCustomRequest } = require("@octokit/graphql");
 let requestCounter = 0;
 const myRequest = request.defaults({
   headers: {
-    authentication: "token secret123",
+    authorization: "bearer secret123",
   },
   request: {
     hook(request, options) {
