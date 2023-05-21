@@ -1,7 +1,7 @@
 import { request as Request } from "@octokit/request";
-import { ResponseHeaders } from "@octokit/types";
+import type { ResponseHeaders } from "@octokit/types";
 import { GraphqlResponseError } from "./error";
-import {
+import type {
   GraphQlEndpointOptions,
   RequestParameters,
   GraphQlQueryResponse,

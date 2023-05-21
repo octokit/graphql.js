@@ -34,7 +34,7 @@ describe("errors", () => {
           .post("https://api.github.com/graphql", mockResponse),
       },
     })
-      .then((result) => {
+      .then(() => {
         throw new Error("Should not resolve");
       })
 
@@ -80,7 +80,7 @@ describe("errors", () => {
           .post("https://api.github.com/graphql", mockResponse),
       },
     })
-      .then((result) => {
+      .then(() => {
         throw new Error("Should not resolve");
       })
 
@@ -142,7 +142,7 @@ describe("errors", () => {
         }),
       },
     })
-      .then((result) => {
+      .then(() => {
         throw new Error("Should not resolve");
       })
       .catch((error) => {
@@ -175,7 +175,7 @@ describe("errors", () => {
         fetch: fetchMock.sandbox().post("https://api.github.com/graphql", 500),
       },
     })
-      .then((result) => {
+      .then(() => {
         throw new Error("Should not resolve");
       })
       .catch((error) => {

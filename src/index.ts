@@ -13,7 +13,7 @@ export const graphql = withDefaults(request, {
   url: "/graphql",
 });
 
-export { GraphQlQueryResponseData } from "./types";
+export type { GraphQlQueryResponseData } from "./types";
 export { GraphqlResponseError } from "./error";
 
 export function withCustomRequest(customRequest: typeof request) {
