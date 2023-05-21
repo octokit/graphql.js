@@ -1,5 +1,9 @@
 import { request as Request } from "@octokit/request";
-import { graphql as ApiInterface, Query, RequestParameters } from "./types";
+import type {
+  graphql as ApiInterface,
+  Query,
+  RequestParameters,
+} from "./types";
 import { graphql } from "./graphql";
 
 export function withDefaults(

@@ -1,5 +1,5 @@
-import { ResponseHeaders } from "@octokit/types";
-import { GraphQlEndpointOptions, GraphQlQueryResponse } from "./types";
+import type { ResponseHeaders } from "@octokit/types";
+import type { GraphQlEndpointOptions, GraphQlQueryResponse } from "./types";
 
 type ServerResponseData<T> = Required<GraphQlQueryResponse<T>>;
 
