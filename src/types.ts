@@ -9,7 +9,16 @@ import { graphql } from "./graphql";
 export type GraphQlEndpointOptions = EndpointOptions & {
   variables?: { [key: string]: unknown };
 };
-export type RequestParameters = RequestParametersType;
+export type RequestParameters = RequestParametersType & {
+  mediaType?: {
+    /**
+     * Custom media type names of {@link https://docs.github.com/en/graphql/overview/schema-previews|GraphQL API Previews} without the `-preview` suffix.
+     * Example for single preview: `['squirrel-girl']`.
+     * Example for multiple previews: `['squirrel-girl', 'mister-fantastic']`.
+     */
+    previews?: string[];
+  };
+};
 
 export type Query = string;
 
