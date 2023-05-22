@@ -99,7 +99,7 @@ describe("graphql()", () => {
           .sandbox()
           .post(
             "https://api.github.com/graphql",
-            (url, options: OctokitTypes.RequestOptions) => {
+            (_url, options: OctokitTypes.RequestOptions) => {
               const body = JSON.parse(options.body);
               expect(body.query).toEqual(query);
               expect(body.variables).toStrictEqual({
@@ -139,7 +139,7 @@ describe("graphql()", () => {
           .sandbox()
           .post(
             "https://api.github.com/graphql",
-            (url, options: OctokitTypes.RequestOptions) => {
+            (_url, options: OctokitTypes.RequestOptions) => {
               const body = JSON.parse(options.body);
               expect(body.query).toEqual(query);
               expect(body.variables).toStrictEqual({
@@ -185,7 +185,7 @@ describe("graphql()", () => {
           .sandbox()
           .post(
             "https://api.github.com/graphql",
-            (url, options: OctokitTypes.RequestOptions) => {
+            (_url, options: OctokitTypes.RequestOptions) => {
               const body = JSON.parse(options.body);
               expect(body.query).toEqual(query);
               expect(body.variables).toStrictEqual({
@@ -214,7 +214,7 @@ describe("graphql()", () => {
           .sandbox()
           .post(
             "https://api.github.com/graphql",
-            (url, options: OctokitTypes.RequestOptions) => {
+            (_url, options: OctokitTypes.RequestOptions) => {
               const body = JSON.parse(options.body);
               expect(body.query).toEqual(query);
               expect(body.variables).toEqual(undefined);
@@ -241,7 +241,7 @@ describe("graphql()", () => {
           .sandbox()
           .post(
             "https://api.github.com/graphql",
-            (url, options: OctokitTypes.RequestOptions) => {
+            (_url, options: OctokitTypes.RequestOptions) => {
               expect(options.headers.accept).toContain("antiope-preview");
               expect(options.headers.accept).toContain("testpkg-preview");
               return { data: {} };

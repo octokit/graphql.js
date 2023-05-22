@@ -6,7 +6,7 @@
   },
   "description": "GitHub GraphQL API client for browsers and Node",
   "scripts": {
-    "build": "pika-pack build",
+    "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "pretest": "npm run lint -s",
@@ -27,14 +27,13 @@
     "universal-user-agent": "^6.0.0"
   },
   "devDependencies": {
-    "@pika/pack": "^0.3.7",
-    "@pika/plugin-build-node": "^0.9.0",
-    "@pika/plugin-build-web": "^0.9.0",
-    "@pika/plugin-ts-standard-pkg": "^0.9.0",
+    "@octokit/tsconfig": "^1.0.2",
     "@types/fetch-mock": "^7.2.5",
     "@types/jest": "^29.0.0",
     "@types/node": "^18.0.0",
+    "esbuild": "^0.17.19",
     "fetch-mock": "^9.0.0",
+    "glob": "^10.2.6",
     "jest": "^29.0.0",
     "prettier": "2.8.8",
     "semantic-release-plugin-update-version-in-files": "^1.0.0",
@@ -51,22 +50,6 @@
         "lines": 100
       }
     }
-  },
-  "@pika/pack": {
-    "pipeline": [
-      [
-        "@pika/plugin-ts-standard-pkg"
-      ],
-      [
-        "@pika/plugin-build-node",
-        {
-          "minNodeVersion": 18
-        }
-      ],
-      [
-        "@pika/plugin-build-web"
-      ]
-    ]
   },
   "release": {
     "branches": [
