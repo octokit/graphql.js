@@ -31,11 +31,11 @@
 Browsers
 </th><td width=100%>
 
-Load `@octokit/graphql` directly from [cdn.skypack.dev](https://cdn.skypack.dev)
+Load `@octokit/graphql` directly from [esm.sh](https://esm.sh)
 
 ```html
 <script type="module">
-  import { graphql } from "https://cdn.skypack.dev/@octokit/graphql";
+  import { graphql } from "https://esm.sh/@octokit/graphql";
 </script>
 ```
 
