@@ -63,7 +63,7 @@ describe("graphql.defaults()", () => {
         }
       }
     }`).then((result) => {
-      expect(result).toStrictEqual(mockData);
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
     });
   });
 
@@ -122,7 +122,7 @@ describe("graphql.defaults()", () => {
         }
       }
     }`).then((result) => {
-      expect(result).toStrictEqual(mockData);
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
     });
   });
 
