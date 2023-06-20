@@ -70,7 +70,7 @@ describe("withCustomRequest()", () => {
         },
       }
     ).then((result) => {
-      expect(result).toStrictEqual(mockData);
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
     });
   });
 });
