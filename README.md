@@ -76,7 +76,7 @@ const { repository } = await graphql(
     headers: {
       authorization: `token secret123`,
     },
-  },
+  }
 );
 ```
 
@@ -131,7 +131,7 @@ const { repository } = await graphqlWithAuth(
         }
       }
     }
-  }`,
+  }`
 );
 ```
 
@@ -160,7 +160,7 @@ const { lastIssues } = await graphql(
     headers: {
       authorization: `token secret123`,
     },
-  },
+  }
 );
 ```
 
@@ -396,7 +396,7 @@ graphql("{ viewer { login } }", {
         assert.strictEqual(
           options.body,
           '{"query":"{ viewer { login } }"}',
-          "Sends correct query",
+          "Sends correct query"
         );
         return { data: {} };
       }),
