@@ -4,7 +4,7 @@ import type { GraphQlEndpointOptions, GraphQlQueryResponse } from "./types";
 type ServerResponseData<T> = Required<GraphQlQueryResponse<T>>;
 
 function _buildMessageForResponseErrors(
-  data: ServerResponseData<unknown>
+  data: ServerResponseData<unknown>,
 ): string {
   return (
     `Request failed due to following response errors:\n` +
@@ -21,7 +21,7 @@ export class GraphqlResponseError<ResponseData> extends Error {
   constructor(
     readonly request: GraphQlEndpointOptions,
     readonly headers: ResponseHeaders,
-    readonly response: ServerResponseData<ResponseData>
+    readonly response: ServerResponseData<ResponseData>,
   ) {
     super(_buildMessageForResponseErrors(response));
 

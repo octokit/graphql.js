@@ -48,7 +48,7 @@ describe("graphql.defaults()", () => {
             headers: {
               authorization: "token secret123",
             },
-          }
+          },
         ),
       },
     });
@@ -104,7 +104,7 @@ describe("graphql.defaults()", () => {
             headers: {
               authorization: "token secret123",
             },
-          }
+          },
         ),
       },
     });
@@ -140,7 +140,7 @@ describe("graphql.defaults()", () => {
             headers: {
               authorization: "token secret123",
             },
-          }
+          },
         ),
       },
     });
@@ -189,7 +189,7 @@ describe("graphql.defaults()", () => {
             headers: {
               authorization: "token secret123",
             },
-          }
+          },
         ),
       },
     });

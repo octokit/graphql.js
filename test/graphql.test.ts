@@ -66,10 +66,10 @@ describe("graphql()", () => {
                 authorization: "token secret123",
                 "user-agent": userAgent,
               },
-            }
+            },
           ),
         },
-      }
+      },
     ).then((result) => {
       expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
     });
@@ -108,7 +108,7 @@ describe("graphql()", () => {
               });
 
               return { data: {} };
-            }
+            },
           ),
       },
     });
@@ -147,12 +147,12 @@ describe("graphql()", () => {
                 repo: "graphql.js",
               });
               expect(options.headers["authorization"]).toEqual(
-                "token secret123"
+                "token secret123",
               );
               expect(options.headers["x-custom"]).toEqual("value");
 
               return { data: {} };
-            }
+            },
           ),
       },
     };
@@ -194,7 +194,7 @@ describe("graphql()", () => {
               });
 
               return { data: {} };
-            }
+            },
           ),
       },
     };
@@ -220,7 +220,7 @@ describe("graphql()", () => {
               expect(body.variables).toEqual(undefined);
 
               return { data: {} };
-            }
+            },
           ),
       },
     });
@@ -245,7 +245,7 @@ describe("graphql()", () => {
               expect(options.headers.accept).toContain("antiope-preview");
               expect(options.headers.accept).toContain("testpkg-preview");
               return { data: {} };
-            }
+            },
           ),
       },
     });
@@ -273,7 +273,7 @@ describe("graphql()", () => {
       query: "test",
     }).catch((error) => {
       expect(error.message).toEqual(
-        `[@octokit/graphql] "query" cannot be used as variable name`
+        `[@octokit/graphql] "query" cannot be used as variable name`,
       );
     });
   });
@@ -295,7 +295,7 @@ describe("graphql()", () => {
       url: "https://example.com",
     }).catch((error) => {
       expect(error.message).toEqual(
-        `[@octokit/graphql] "url" cannot be used as variable name`
+        `[@octokit/graphql] "url" cannot be used as variable name`,
       );
     });
   });
@@ -313,7 +313,7 @@ describe("graphql()", () => {
       method: "test",
     }).catch((error) => {
       expect(error.message).toEqual(
-        `[@octokit/graphql] "method" cannot be used as variable name`
+        `[@octokit/graphql] "method" cannot be used as variable name`,
       );
     });
   });

@@ -41,10 +41,10 @@ describe("errors", () => {
       .catch((error) => {
         expect(error.message).toEqual(
           "Request failed due to following response errors:\n" +
-            " - Field 'bioHtml' doesn't exist on type 'User'"
+            " - Field 'bioHtml' doesn't exist on type 'User'",
         );
         expect(JSON.stringify(error.errors)).toStrictEqual(
-          JSON.stringify(mockResponse.errors)
+          JSON.stringify(mockResponse.errors),
         );
         expect(error.request.query).toEqual(query);
       });
@@ -150,18 +150,18 @@ describe("errors", () => {
       .catch((error) => {
         expect(error.message).toEqual(
           "Request failed due to following response errors:\n" +
-            " - `invalid cursor` does not appear to be a valid cursor."
+            " - `invalid cursor` does not appear to be a valid cursor.",
         );
         expect(JSON.stringify(error.errors)).toStrictEqual(
-          JSON.stringify(mockResponse.errors)
+          JSON.stringify(mockResponse.errors),
         );
         expect(error.request.query).toEqual(query);
         expect(JSON.stringify(error.data)).toStrictEqual(
-          JSON.stringify(mockResponse.data)
+          JSON.stringify(mockResponse.data),
         );
         expect(error.headers).toHaveProperty("x-github-request-id");
         expect(error.headers["x-github-request-id"]).toEqual(
-          "C5E6:259A:1351B40:2E88B87:5F1F9C41"
+          "C5E6:259A:1351B40:2E88B87:5F1F9C41",
         );
       });
   });
