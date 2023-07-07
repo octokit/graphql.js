@@ -30,7 +30,7 @@ export interface graphql {
    */
   <ResponseData>(
     query: Query,
-    parameters?: RequestParameters
+    parameters?: RequestParameters,
   ): GraphQlResponse<ResponseData>;
 
   /**
@@ -65,8 +65,8 @@ export type GraphQlQueryResponse<ResponseData> = {
         {
           line: number;
           column: number;
-        }
+        },
       ];
-    }
+    },
   ];
 };

@@ -65,10 +65,10 @@ describe("withCustomRequest()", () => {
                 authorization: "token secret123",
                 "user-agent": "test",
               },
-            }
+            },
           ),
         },
-      }
+      },
     ).then((result) => {
       expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
     });

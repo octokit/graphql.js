@@ -25,12 +25,12 @@ const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 export function graphql<ResponseData = GraphQlQueryResponseData>(
   request: typeof Request,
   query: string | RequestParameters,
-  options?: RequestParameters
+  options?: RequestParameters,
 ): Promise<ResponseData> {
   if (options) {
     if (typeof query === "string" && "query" in options) {
       return Promise.reject(
-        new Error(`[@octokit/graphql] "query" cannot be used as variable name`)
+        new Error(`[@octokit/graphql] "query" cannot be used as variable name`),
       );
     }
 
@@ -38,7 +38,9 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
       if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key)) continue;
 
       return Promise.reject(
-        new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`)
+        new Error(
+          `[@octokit/graphql] "${key}" cannot be used as variable name`,
+        ),
       );
     }
   }
@@ -47,7 +49,7 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
     typeof query === "string" ? Object.assign({ query }, options) : query;
 
   const requestOptions = Object.keys(
-    parsedOptions
+    parsedOptions,
   ).reduce<GraphQlEndpointOptions>((result, key) => {
     if (NON_VARIABLE_OPTIONS.includes(key)) {
       result[key] = parsedOptions[key];
@@ -79,7 +81,7 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
       throw new GraphqlResponseError(
         requestOptions,
         headers,
-        response.data as Required<GraphQlQueryResponse<ResponseData>>
+        response.data as Required<GraphQlQueryResponse<ResponseData>>,
       );
     }
 

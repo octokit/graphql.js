@@ -8,12 +8,12 @@ import { graphql } from "./graphql";
 
 export function withDefaults(
   request: typeof Request,
-  newDefaults: RequestParameters
+  newDefaults: RequestParameters,
 ): ApiInterface {
   const newRequest = request.defaults(newDefaults);
   const newApi = <ResponseData>(
     query: Query | RequestParameters,
-    options?: RequestParameters
+    options?: RequestParameters,
   ) => {
     return graphql<ResponseData>(newRequest, query, options);
   };
