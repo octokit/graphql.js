@@ -140,7 +140,7 @@ const { repository } = await graphqlWithAuth(
 ⚠️ Do not use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) in the query strings as they make your code vulnerable to query injection attacks (see [#2](https://github.com/octokit/graphql.js/issues/2)). Use variables instead:
 
 ```js
-const { lastIssues } = await graphql(
+const { repository } = await graphql(
   `
     query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
       repository(owner: $owner, name: $repo) {
@@ -168,10 +168,10 @@ const { lastIssues } = await graphql(
 
 ```js
 const { graphql } = require("@octokit/graphql");
-const { lastIssues } = await graphql({
+const { repository } = await graphql({
   query: `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
-    repository(owner:$owner, name:$repo) {
-      issues(last:$num) {
+    repository(owner: $owner, name: $repo) {
+      issues(last: $num) {
         edges {
           node {
             title
