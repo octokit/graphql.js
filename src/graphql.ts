@@ -1,12 +1,12 @@
 import { request as Request } from "@octokit/request";
 import type { ResponseHeaders } from "@octokit/types";
-import { GraphqlResponseError } from "./error";
+import { GraphqlResponseError } from "./error.js";
 import type {
   GraphQlEndpointOptions,
   RequestParameters,
   GraphQlQueryResponse,
   GraphQlQueryResponseData,
-} from "./types";
+} from "./types.js";
 
 const NON_VARIABLE_OPTIONS = [
   "method",

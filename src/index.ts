@@ -1,9 +1,9 @@
 import { request } from "@octokit/request";
 import { getUserAgent } from "universal-user-agent";
 
-import { VERSION } from "./version";
+import { VERSION } from "./version.js";
 
-import { withDefaults } from "./with-defaults";
+import { withDefaults } from "./with-defaults.js";
 
 export const graphql = withDefaults(request, {
   headers: {
