@@ -3,8 +3,8 @@ import type {
   graphql as ApiInterface,
   Query,
   RequestParameters,
-} from "./types";
-import { graphql } from "./graphql";
+} from "./types.js";
+import { graphql } from "./graphql.js";
 
 export function withDefaults(
   request: typeof Request,

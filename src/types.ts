@@ -4,7 +4,7 @@ import type {
   EndpointInterface,
 } from "@octokit/types";
 
-import { graphql } from "./graphql";
+import type { graphql } from "./graphql.js";
 
 export type GraphQlEndpointOptions = EndpointOptions & {
   variables?: { [key: string]: unknown };
