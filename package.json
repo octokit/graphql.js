@@ -4,13 +4,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "description": "GitHub GraphQL API client for browsers and Node",
   "scripts": {
     "build": "node scripts/build.mjs && tsc -p tsconfig.json",
     "lint": "prettier --check {src,test}/* README.md package.json",
     "lint:fix": "prettier --write {src,test}/* README.md package.json",
     "pretest": "npm run lint -s",
-    "test": "jest --coverage"
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest --coverage"
   },
   "repository": "github:octokit/graphql.js",
   "keywords": [
@@ -22,12 +23,12 @@
   "author": "Gregor Martynus (https://github.com/gr2m)",
   "license": "MIT",
   "dependencies": {
-    "@octokit/request": "^8.0.1",
+    "@octokit/request": "^9.0.0",
     "@octokit/types": "^12.0.0",
-    "universal-user-agent": "^6.0.0"
+    "universal-user-agent": "^7.0.0"
   },
   "devDependencies": {
-    "@octokit/tsconfig": "^2.0.0",
+    "@octokit/tsconfig": "^3.0.0",
     "@types/fetch-mock": "^7.2.5",
     "@types/jest": "^29.0.0",
     "@types/node": "^20.0.0",
@@ -37,15 +38,19 @@
     "jest": "^29.0.0",
     "prettier": "3.2.5",
     "semantic-release-plugin-update-version-in-files": "^1.0.0",
-    "ts-jest": "^29.0.0",
-    "typescript": "^5.0.0"
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.0"
   },
   "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "transform": {
       "^.+\\.(ts|tsx)$": [
         "ts-jest",
         {
-          "tsconfig": "test/tsconfig.test.json"
+          "tsconfig": "test/tsconfig.test.json",
+          "useESM": true
         }
       ]
     },
