@@ -13,8 +13,8 @@ export const graphql = withDefaults(request, {
   url: "/graphql",
 });
 
-export type { GraphQlQueryResponseData } from "./types";
-export { GraphqlResponseError } from "./error";
+export type { GraphQlQueryResponseData } from "./types.js";
+export { GraphqlResponseError } from "./error.js";
 
 export function withCustomRequest(customRequest: typeof request) {
   return withDefaults(customRequest, {
