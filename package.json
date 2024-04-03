@@ -2,7 +2,8 @@
   "name": "@octokit/graphql",
   "version": "0.0.0-development",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "type": "module",
   "description": "GitHub GraphQL API client for browsers and Node",
