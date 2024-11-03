@@ -7,17 +7,6 @@ import type {
 import { graphql } from "./graphql.js";
 import type { DocumentTypeDecoration } from "@graphql-typed-document-node/core";
 
-/**
- * Allows discarding the DocumentTypeDecoration information from the external
- * interface, and casting the String part to string. This avoids the external
- * API interface spreading to the internal types, while keeping type-safety for
- * future extensions/changes.
- */
-type DiscardTypeDecoration<T> = T extends String &
-  DocumentTypeDecoration<unknown, unknown>
-  ? string
-  : T;
-
 export function withDefaults(
   request: typeof Request,
   newDefaults: RequestParameters,
@@ -30,11 +19,20 @@ export function withDefaults(
       | RequestParameters,
     options?: RequestParameters,
   ) => {
-    return graphql<ResponseData>(
-      newRequest,
-      query as DiscardTypeDecoration<typeof query>,
-      options,
-    );
+    const innerQuery =
+      typeof query === "string"
+        ? query
+        : // Allows casting String & DocumentTypeDecoration<unknown, unknown> to
+          // string. This could be replaced with an instanceof check if we had
+          // access to a shared TypedDocumentString. Alternatively, we could use
+          // string & TypedDocumentDecoration<unknown, unknown> as the external
+          // interface, and push `.toString()` onto the caller, which might not
+          // be the worst idea.
+          String.prototype.isPrototypeOf(query)
+          ? query.toString()
+          : (query as RequestParameters);
+
+    return graphql<ResponseData>(newRequest, innerQuery, options);
   };
 
   return Object.assign(newApi, {
