@@ -5,7 +5,7 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     // TODO: This setting is not compatible with the default definition of
-    // DocumentTypeDecoration from '@graphql-codegen-types/core'. That
+    // DocumentTypeDecoration from '@graphql-typed-document-node/core'. That
     // definition includes `{__apiType?: ...}` as an optional, so assigning it
     // to an explicit `undefined` is impossible under
     // exactOptionalPropertyTypes. We only need to work around this in tests,
