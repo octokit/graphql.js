@@ -4,6 +4,8 @@ import type {
   EndpointInterface,
 } from "@octokit/types";
 
+import type { DocumentTypeDecoration } from "@graphql-typed-document-node/core";
+
 import type { graphql } from "./graphql.js";
 
 export type GraphQlEndpointOptions = EndpointOptions & {
@@ -31,6 +33,25 @@ export interface graphql {
   <ResponseData>(
     query: Query,
     parameters?: RequestParameters,
+  ): GraphQlResponse<ResponseData>;
+
+  /**
+   * Sends a GraphQL query request based on endpoint options. The query parameters are type-checked
+   *
+   * @param {String & DocumentTypeDecoration<ResponseData, QueryVariables>} query GraphQL query. Example: `'query { viewer { login } }'`.
+   * @param {object} [parameters] URL, query or body parameters, as well as `headers`, `mediaType.{format|previews}`, `request`, or `baseUrl`.
+   */
+  <ResponseData, QueryVariables>(
+    query: String & DocumentTypeDecoration<ResponseData, QueryVariables>,
+    /**
+     * The tuple in rest parameters allows makes RequestParameters conditionally
+     * optional , if the query does not require any variables.
+     *
+     * @see https://github.com/Microsoft/TypeScript/pull/24897#:~:text=not%20otherwise%20observable).-,Optional%20elements%20in%20tuple%20types,-Tuple%20types%20now
+     */
+    ...[parameters]: QueryVariables extends Record<string, never>
+      ? [RequestParameters?]
+      : [QueryVariables & RequestParameters]
   ): GraphQlResponse<ResponseData>;
 
   /**
