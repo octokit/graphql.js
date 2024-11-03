@@ -3,7 +3,14 @@
   "compilerOptions": {
     "emitDeclarationOnly": false,
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    // TODO: This setting is not compatible with the default definition of
+    // DocumentTypeDecoration from '@graphql-codegen-types/core'. That
+    // definition includes `{__apiType?: ...}` as an optional, so assigning it
+    // to an explicit `undefined` is impossible under
+    // exactOptionalPropertyTypes. We only need to work around this in tests,
+    // since that is where we use concrete examples of DocumentTypeDecoration.
+    "exactOptionalPropertyTypes": false
   },
   "include": ["src/**/*"]
 }
