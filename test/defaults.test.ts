@@ -36,20 +36,22 @@ describe("graphql.defaults()", () => {
       },
     };
 
+    const mock = fetchMock.createInstance().post(
+      "https://api.github.com/graphql",
+      { data: mockData },
+      {
+        headers: {
+          authorization: "token secret123",
+        },
+      },
+    );
+
     const authenticatedGraphql = graphql.defaults({
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post(
-          "https://api.github.com/graphql",
-          { data: mockData },
-          {
-            headers: {
-              authorization: "token secret123",
-            },
-          },
-        ),
+        fetch: mock.fetchHandler,
       },
     });
     return authenticatedGraphql(`{
@@ -92,20 +94,22 @@ describe("graphql.defaults()", () => {
       },
     };
 
+    const mock = fetchMock.createInstance().post(
+      "https://github.acme-inc.com/api/graphql",
+      { data: mockData },
+      {
+        headers: {
+          authorization: "token secret123",
+        },
+      },
+    );
+
     const authenticatedGraphql = graphql.defaults({
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post(
-          "https://github.acme-inc.com/api/graphql",
-          { data: mockData },
-          {
-            headers: {
-              authorization: "token secret123",
-            },
-          },
-        ),
+        fetch: mock.fetchHandler,
       },
     });
     const acmeGraphql = authenticatedGraphql.defaults({
@@ -127,21 +131,23 @@ describe("graphql.defaults()", () => {
   });
 
   it("handle baseUrl set with /api/v3 suffix", () => {
+    const mock = fetchMock.createInstance().post(
+      "https://github.acme-inc.com/api/graphql",
+      { data: { ok: true } },
+      {
+        headers: {
+          authorization: "token secret123",
+        },
+      },
+    );
+
     const ghesGraphQl = graphql.defaults({
       baseUrl: "https://github.acme-inc.com/api/v3",
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post(
-          "https://github.acme-inc.com/api/graphql",
-          { data: { ok: true } },
-          {
-            headers: {
-              authorization: "token secret123",
-            },
-          },
-        ),
+        fetch: mock.fetchHandler,
       },
     });
 
@@ -182,7 +188,7 @@ describe("graphql.defaults()", () => {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post(
+        fetch: fetchMock.createInstance().post(
           "https://github.acme-inc.com/api/graphql",
           { data: mockData },
           {

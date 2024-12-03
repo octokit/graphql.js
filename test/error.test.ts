@@ -24,14 +24,16 @@ describe("errors", () => {
       ],
     };
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", mockResponse);
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post("https://api.github.com/graphql", mockResponse),
+        fetch: mock.fetchHandler,
       },
     })
       .then(() => {
@@ -72,14 +74,16 @@ describe("errors", () => {
       ],
     };
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", mockResponse);
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post("https://api.github.com/graphql", mockResponse),
+        fetch: mock.fetchHandler,
       },
     })
       .then(() => {
@@ -131,17 +135,21 @@ describe("errors", () => {
       ],
     };
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", {
+        body: mockResponse,
+        headers: {
+          "x-github-request-id": "C5E6:259A:1351B40:2E88B87:5F1F9C41",
+        },
+      });
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", {
-          body: mockResponse,
-          headers: {
-            "x-github-request-id": "C5E6:259A:1351B40:2E88B87:5F1F9C41",
-          },
-        }),
+        fetch: mock.fetchHandler,
       },
     })
       .then(() => {
@@ -173,12 +181,16 @@ describe("errors", () => {
       }
     }`;
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", 500);
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post("https://api.github.com/graphql", 500),
+        fetch: mock.fetchHandler,
       },
     })
       .then(() => {
