@@ -1,6 +1,5 @@
 import fetchMock from "fetch-mock";
 import { getUserAgent } from "universal-user-agent";
-import type * as OctokitTypes from "@octokit/types";
 
 import { graphql } from "../src";
 import { VERSION } from "../src/version";
@@ -38,6 +37,18 @@ describe("graphql()", () => {
       },
     };
 
+    const mock = fetchMock.createInstance().post(
+      "https://api.github.com/graphql",
+      { data: mockData },
+      {
+        headers: {
+          accept: "application/vnd.github.v3+json",
+          authorization: "token secret123",
+          "user-agent": userAgent,
+        },
+      },
+    );
+
     return graphql(
       `
         {
@@ -57,17 +68,7 @@ describe("graphql()", () => {
           authorization: `token secret123`,
         },
         request: {
-          fetch: fetchMock.sandbox().post(
-            "https://api.github.com/graphql",
-            { data: mockData },
-            {
-              headers: {
-                accept: "application/vnd.github.v3+json",
-                authorization: "token secret123",
-                "user-agent": userAgent,
-              },
-            },
-          ),
+          fetch: mock.fetchHandler,
         },
       },
     ).then((result) => {
@@ -88,6 +89,20 @@ describe("graphql()", () => {
       }
     }`;
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", (_url: any) => {
+        //@ts-ignore mock.fetchHandler is not typed
+        const body = JSON.parse(mock.callHistory.calls()[0].options.body);
+        expect(body.query).toEqual(query);
+        expect(body.variables).toStrictEqual({
+          owner: "octokit",
+          repo: "graphql.js",
+        });
+
+        return { data: {} };
+      });
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
@@ -95,21 +110,7 @@ describe("graphql()", () => {
       owner: "octokit",
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              const body = JSON.parse(options.body);
-              expect(body.query).toEqual(query);
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
-
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     });
   });
@@ -127,6 +128,23 @@ describe("graphql()", () => {
       }
     }`;
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", (_url: any) => {
+        //@ts-ignore mock.fetchHandler is not typed
+        const body = JSON.parse(mock.callHistory.calls()[0].options.body);
+        expect(body.query).toEqual(query);
+        expect(body.variables).toStrictEqual({
+          owner: "octokit",
+          repo: "graphql.js",
+        });
+        expect(options.headers!.authorization).toEqual("token secret123");
+        // @ts-ignore `request.headers` are typed incorrectly by fetch-mock
+        const custom = mock.callHistory.calls()[0].options.headers!["x-custom"];
+        expect(custom).toContain("value");
+        return { data: {} };
+      });
+
     const options: RequestParameters = {
       headers: {
         authorization: `token secret123`,
@@ -135,25 +153,7 @@ describe("graphql()", () => {
       owner: "octokit",
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              const body = JSON.parse(options.body);
-              expect(body.query).toEqual(query);
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
-              expect(options.headers["authorization"]).toEqual(
-                "token secret123",
-              );
-              expect(options.headers["x-custom"]).toEqual("value");
-
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     };
 
@@ -173,6 +173,20 @@ describe("graphql()", () => {
       }
     }`;
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", (_url: any) => {
+        //@ts-ignore mock.fetchHandler is not typed
+        const body = JSON.parse(mock.callHistory.calls()[0].options.body);
+        expect(body.query).toEqual(query);
+        expect(body.variables).toStrictEqual({
+          owner: "octokit",
+          repo: "graphql.js",
+        });
+
+        return { data: {} };
+      });
+
     const options: RequestParameters = {
       headers: {
         authorization: `token secret123`,
@@ -181,21 +195,7 @@ describe("graphql()", () => {
       query,
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              const body = JSON.parse(options.body);
-              expect(body.query).toEqual(query);
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
-
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     };
 
@@ -205,50 +205,55 @@ describe("graphql()", () => {
   it("Don’t send empty variables object", () => {
     const query = "{ viewer { login } }";
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", (_url: any) => {
+        //@ts-ignore mock.fetchHandler is not typed
+        const body = JSON.parse(mock.callHistory.calls()[0].options.body);
+        expect(body.query).toEqual(query);
+        expect(body.variables).toEqual(undefined);
+        return { data: {} };
+      });
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              const body = JSON.parse(options.body);
-              expect(body.query).toEqual(query);
-              expect(body.variables).toEqual(undefined);
-
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     });
   });
 
-  it("MediaType previews are added to header", () => {
+  it("MediaType previews are added to header", async () => {
     const query = `{ viewer { login } }`;
 
-    return graphql(query, {
+    // Create a new FetchMock instance
+    const mock = fetchMock
+      .createInstance()
+      .postOnce("https://api.github.com/graphql", (_url: any) => {
+        // @ts-ignore `request.headers` are typed incorrectly by fetch-mock
+        const accept = mock.callHistory.calls()[0].options.headers["accept"];
+        expect(accept).toContain("antiope-preview");
+        expect(accept).toContain("testpkg-preview");
+        return {
+          status: 200,
+          body: { data: {} },
+        };
+      });
+
+    // Perform the GraphQL request using mock.fetchHandler
+    const response = await graphql(query, {
       headers: {
         authorization: `token secret123`,
       },
-      owner: "octokit",
-      repo: "graphql.js",
       mediaType: { previews: ["antiope", "testpkg"] },
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              expect(options.headers.accept).toContain("antiope-preview");
-              expect(options.headers.accept).toContain("testpkg-preview");
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     });
+
+    expect(response).toEqual({});
   });
 
   it("query variable (#166)", () => {
