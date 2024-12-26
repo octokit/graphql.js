@@ -37,6 +37,18 @@ describe("withCustomRequest()", () => {
       },
     };
 
+    const mock = fetchMock.createInstance().post(
+      "https://api.github.com/graphql",
+      { data: mockData },
+      {
+        headers: {
+          accept: "application/vnd.github.v3+json",
+          authorization: "token secret123",
+          "user-agent": "test",
+        },
+      },
+    );
+
     return myGraphql(
       `
         {
@@ -56,17 +68,7 @@ describe("withCustomRequest()", () => {
           authorization: `token secret123`,
         },
         request: {
-          fetch: fetchMock.sandbox().post(
-            "https://api.github.com/graphql",
-            { data: mockData },
-            {
-              headers: {
-                accept: "application/vnd.github.v3+json",
-                authorization: "token secret123",
-                "user-agent": "test",
-              },
-            },
-          ),
+          fetch: mock.fetchHandler,
         },
       },
     ).then((result) => {
