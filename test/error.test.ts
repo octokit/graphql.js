@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import fetchMock from "fetch-mock";
 
 import { graphql, GraphqlResponseError } from "../src";
