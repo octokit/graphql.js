@@ -118,6 +118,18 @@ describe("graphql()", () => {
       },
     };
 
+    const mock = fetchMock.createInstance().post(
+      "https://api.github.com/graphql",
+      { data: mockData },
+      {
+        headers: {
+          accept: "application/vnd.github.v3+json",
+          authorization: "token secret123",
+          "user-agent": userAgent,
+        },
+      },
+    );
+
     const RepositoryDocument = new TypedDocumentString<
       {
         repository: { issues: { edges: Array<{ node: { title: string } }> } };
@@ -142,17 +154,7 @@ describe("graphql()", () => {
         authorization: `token secret123`,
       },
       request: {
-        fetch: fetchMock.sandbox().post(
-          "https://api.github.com/graphql",
-          { data: mockData },
-          {
-            headers: {
-              accept: "application/vnd.github.v3+json",
-              authorization: "token secret123",
-              "user-agent": userAgent,
-            },
-          },
-        ),
+        fetch: mock.fetchHandler,
       },
     }).then((result) => {
       expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(mockData));
@@ -220,6 +222,20 @@ describe("graphql()", () => {
       }
     }`);
 
+    const mock = fetchMock
+      .createInstance()
+      .post("https://api.github.com/graphql", (callHistory) => {
+        //@ts-ignore mock.fetchHandler is not typed
+        const body = JSON.parse(mock.callHistory.calls()[0].options.body);
+        expect(body.query).toEqual(query.toString());
+        expect(body.variables).toStrictEqual({
+          owner: "octokit",
+          repo: "graphql.js",
+        });
+
+        return { data: {} };
+      });
+
     return graphql(query, {
       headers: {
         authorization: `token secret123`,
@@ -227,21 +243,7 @@ describe("graphql()", () => {
       owner: "octokit",
       repo: "graphql.js",
       request: {
-        fetch: fetchMock
-          .sandbox()
-          .post(
-            "https://api.github.com/graphql",
-            (_url, options: OctokitTypes.RequestOptions) => {
-              const body = JSON.parse(options.body);
-              expect(body.query).toEqual(query.toString());
-              expect(body.variables).toStrictEqual({
-                owner: "octokit",
-                repo: "graphql.js",
-              });
-
-              return { data: {} };
-            },
-          ),
+        fetch: mock.fetchHandler,
       },
     });
   });
