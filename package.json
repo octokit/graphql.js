@@ -24,6 +24,7 @@
   "author": "Gregor Martynus (https://github.com/gr2m)",
   "license": "MIT",
   "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@octokit/request": "^9.1.4",
     "@octokit/types": "^13.6.2",
     "universal-user-agent": "^7.0.0"
