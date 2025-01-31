@@ -16,6 +16,7 @@ const NON_VARIABLE_OPTIONS = [
   "request",
   "query",
   "mediaType",
+  "operationName",
 ];
 
 const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];

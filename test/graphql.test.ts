@@ -319,12 +319,36 @@ describe("graphql()", () => {
       method: "test",
     }).catch((error) => {
       expect(error.message).toEqual(
-        `[@octokit/graphql] "method" cannot be used as variable name`
+        `[@octokit/graphql] "method" cannot be used as variable name`,
       );
     });
   });
 
   describe("When using a query with multiple operations", () => {
+    const mockData = {
+      repository: {
+        issues: {
+          edges: [
+            {
+              node: {
+                title: "Foo",
+              },
+            },
+            {
+              node: {
+                title: "Bar",
+              },
+            },
+            {
+              node: {
+                title: "Baz",
+              },
+            },
+          ],
+        },
+      },
+    };
+
     const mockErrors = {
       errors: [{ message: "An operation name is required" }],
       data: undefined,
@@ -332,9 +356,9 @@ describe("graphql()", () => {
     };
 
     const query = /* GraphQL */ `
-      query Blue {
-        repository(owner: "octokit", name: "graphql.js") {
-          issues(last: 3) {
+      query Blue($last: Int) {
+        repository(owner: "blue", name: "graphql.js") {
+          issues(last: $last) {
             edges {
               node {
                 title
@@ -344,9 +368,9 @@ describe("graphql()", () => {
         }
       }
 
-      query Green {
-        repository(owner: "octokit", name: "graphql.js") {
-          issues(last: 3) {
+      query Green($last: Int) {
+        repository(owner: "green", name: "graphql.js") {
+          issues(last: $last) {
             edges {
               node {
                 title
@@ -357,7 +381,7 @@ describe("graphql()", () => {
       }
       `.trim();
 
-    it("Sends both queries to the server", () => {
+    it("Sends both queries to the server (which will respond with bad request)", () => {
       const fetch = fetchMock.createInstance();
 
       fetch.post("https://api.github.com/graphql", mockErrors, {
@@ -368,7 +392,18 @@ describe("graphql()", () => {
           "user-agent": userAgent,
         },
         matcherFunction: (callLog: CallLog) => {
-          return callLog.options.body === JSON.stringify({ query: query });
+          const expected = {
+            query: query,
+            variables: { last: 3 },
+          };
+          const result = callLog.options.body === JSON.stringify(expected);
+          if (!result) {
+            console.warn("Body did not match expected value", {
+              expected,
+              actual: JSON.parse(callLog.options.body as string),
+            });
+          }
+          return result;
         },
       });
 
@@ -380,16 +415,71 @@ describe("graphql()", () => {
           request: {
             fetch: fetch.fetchHandler,
           },
+          last: 3,
         })
           .then(() => {
             rej("Should have thrown an error");
           })
           .catch((result) => {
             expect(JSON.stringify(result.response)).toStrictEqual(
-              JSON.stringify(mockErrors)
+              JSON.stringify(mockErrors),
+            );
+            res();
+          }),
+      );
+    });
+
+    it('Allows the user to specify the operation name in the "operationName" option', () => {
+      const fetch = fetchMock.createInstance();
+
+      fetch.post(
+        "https://api.github.com/graphql",
+        { data: mockData },
+        {
+          method: "POST",
+          headers: {
+            accept: "application/vnd.github.v3+json",
+            authorization: "token secret123",
+            "user-agent": userAgent,
+          },
+          matcherFunction: (callLog: CallLog) => {
+            const expected = {
+              query: query,
+              operationName: "Blue",
+              variables: { last: 3 },
+            };
+            const result = callLog.options.body === JSON.stringify(expected);
+            if (!result) {
+              console.warn("Body did not match expected value", {
+                expected,
+                actual: JSON.parse(callLog.options.body as string),
+              });
+            }
+            return result;
+          },
+        },
+      );
+
+      return new Promise<void>((res, rej) =>
+        graphql(query, {
+          headers: {
+            authorization: `token secret123`,
+          },
+          request: {
+            fetch: fetch.fetchHandler,
+          },
+          operationName: "Blue",
+          last: 3,
+        })
+          .then((result) => {
+            expect(JSON.stringify(result)).toStrictEqual(
+              JSON.stringify(mockData),
             );
             res();
           })
+          .catch((error) => {
+            rej(error);
+          }),
       );
     });
   });
