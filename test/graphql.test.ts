@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import fetchMock from "fetch-mock";
+import fetchMock, { type CallLog } from "fetch-mock";
 import { getUserAgent } from "universal-user-agent";
 
 import { graphql } from "../src";
@@ -319,7 +319,77 @@ describe("graphql()", () => {
       method: "test",
     }).catch((error) => {
       expect(error.message).toEqual(
-        `[@octokit/graphql] "method" cannot be used as variable name`,
+        `[@octokit/graphql] "method" cannot be used as variable name`
+      );
+    });
+  });
+
+  describe("When using a query with multiple operations", () => {
+    const mockErrors = {
+      errors: [{ message: "An operation name is required" }],
+      data: undefined,
+      status: 400,
+    };
+
+    const query = /* GraphQL */ `
+      query Blue {
+        repository(owner: "octokit", name: "graphql.js") {
+          issues(last: 3) {
+            edges {
+              node {
+                title
+              }
+            }
+          }
+        }
+      }
+
+      query Green {
+        repository(owner: "octokit", name: "graphql.js") {
+          issues(last: 3) {
+            edges {
+              node {
+                title
+              }
+            }
+          }
+        }
+      }
+      `.trim();
+
+    it("Sends both queries to the server", () => {
+      const fetch = fetchMock.createInstance();
+
+      fetch.post("https://api.github.com/graphql", mockErrors, {
+        method: "POST",
+        headers: {
+          accept: "application/vnd.github.v3+json",
+          authorization: "token secret123",
+          "user-agent": userAgent,
+        },
+        matcherFunction: (callLog: CallLog) => {
+          return callLog.options.body === JSON.stringify({ query: query });
+        },
+      });
+
+      return new Promise<void>((res, rej) =>
+        graphql(query, {
+          headers: {
+            authorization: `token secret123`,
+          },
+          request: {
+            fetch: fetch.fetchHandler,
+          },
+        })
+          .then(() => {
+            rej("Should have thrown an error");
+          })
+          .catch((result) => {
+            expect(JSON.stringify(result.response)).toStrictEqual(
+              JSON.stringify(mockErrors)
+            );
+            res();
+          })
       );
     });
   });
