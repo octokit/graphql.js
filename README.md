@@ -260,6 +260,46 @@ Additionally, `GraphQlQueryResponseData` has been exposed to users:
 import type { GraphQlQueryResponseData } from "@octokit/graphql";
 ```
 
+### Usage with graphql-codegen
+
+If your query is represented as a `String & DocumentTypeDecoration`, for example as [`TypedDocumentString` from graphql-codegen and its client preset](https://the-guild.dev/graphql/codegen/docs/guides/vanilla-typescript), then you can get type-safety for the query's parameters and return values.
+
+Assuming you have configured graphql-codegen, with [GitHub's GraphQL schema](https://docs.github.com/en/graphql/overview/public-schema), and an output under `./graphql`:
+
+```tsx
+import * as octokit from "@octokit/graphql";
+
+// The graphql query factory from graphql-codegen's output
+import { graphql } from "./graphql/graphql.js";
+
+const result = await octokit.graphql(
+  graphql`
+    query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+      repository(owner: $owner, name: $repo) {
+        issues(last: $num) {
+          edges {
+            node {
+              title
+            }
+          }
+        }
+      }
+    }
+  `,
+  {
+    owner: "octokit",
+    repo: "graphql.js",
+    headers: {
+      authorization: `token secret123`,
+    },
+  },
+  // ^ parameters are required; owner and repo are type-checked
+);
+
+type Return = typeof result;
+//   ^? { repository: {issues: {edges: Array<{node: {title: string}>}} }
+```
+
 ## Errors
 
 In case of a GraphQL error, `error.message` is set to a combined message describing all errors returned by the endpoint.
