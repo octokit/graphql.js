@@ -25,7 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "@octokit/request": "^9.2.2",
-    "@octokit/types": "^13.8.0",
+    "@octokit/types": "^14.0.0",
     "universal-user-agent": "^7.0.0"
   },
   "devDependencies": {
