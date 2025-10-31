@@ -30,7 +30,7 @@ export class GraphqlResponseError<ResponseData> extends Error {
     this.data = response.data;
 
     // Maintains proper stack trace (only available on V8)
-    /* istanbul ignore next */
+    /* v8 ignore if -- @preserve */
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
     }
