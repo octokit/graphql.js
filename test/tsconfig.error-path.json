@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  },
+  "include": ["error.test-d.ts"]
+}
