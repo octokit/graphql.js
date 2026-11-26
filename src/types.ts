@@ -59,7 +59,7 @@ export type GraphQlQueryResponse<ResponseData> = {
       // https://github.com/octokit/graphql.js/pull/314
       type: string;
       message: string;
-      path: [string];
+      path: (string | number)[];
       extensions: { [key: string]: any };
       locations: [
         {
