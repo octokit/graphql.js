@@ -52,21 +52,19 @@ export type GraphQlQueryResponseData = {
   [key: string]: any;
 };
 
+type NonEmptyArray<T> = [T, ...T[]];
+
 export type GraphQlQueryResponse<ResponseData> = {
   data: ResponseData;
-  errors?: [
-    {
-      // https://github.com/octokit/graphql.js/pull/314
-      type: string;
-      message: string;
-      path: (string | number)[];
-      extensions: { [key: string]: any };
-      locations: [
-        {
-          line: number;
-          column: number;
-        },
-      ];
-    },
-  ];
+  errors?: NonEmptyArray<{
+    // https://github.com/octokit/graphql.js/pull/314
+    type: string;
+    message: string;
+    path: (string | number)[];
+    extensions: { [key: string]: any };
+    locations: NonEmptyArray<{
+      line: number;
+      column: number;
+    }>;
+  }>;
 };

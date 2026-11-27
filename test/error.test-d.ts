@@ -26,3 +26,51 @@ describe("GraphQL error paths", () => {
     assertType<ErrorPath>(["viewer", {}]);
   });
 });
+
+type ResponseErrors = NonNullable<GraphqlResponseError<unknown>["errors"]>;
+type ResponseError = ResponseErrors[number];
+
+describe("GraphQL response error lists", () => {
+  const first: ResponseError = {
+    type: "NOT_FOUND",
+    message: "First field failed",
+    path: ["repository"],
+    extensions: {},
+    locations: [{ line: 1, column: 1 }],
+  };
+  const second: ResponseError = {
+    ...first,
+    message: "Second field failed",
+    path: ["viewer"],
+  };
+
+  it("accepts a single error and location", () => {
+    assertType<ResponseErrors>([first]);
+    assertType<ResponseError["locations"]>([{ line: 1, column: 1 }]);
+  });
+
+  it("accepts multiple errors", () => {
+    assertType<ResponseErrors>([first, second]);
+  });
+
+  it("accepts multiple locations", () => {
+    assertType<ResponseError["locations"]>([
+      { line: 1, column: 1 },
+      { line: 2, column: 1 },
+    ]);
+  });
+
+  it("rejects empty error and location lists", () => {
+    // @ts-expect-error An error list must contain at least one error.
+    assertType<ResponseErrors>([]);
+    // @ts-expect-error A location list must contain at least one location.
+    assertType<ResponseError["locations"]>([]);
+  });
+
+  it("rejects invalid error and location entries", () => {
+    // @ts-expect-error Errors must have the response error shape.
+    assertType<ResponseErrors>(["error"]);
+    // @ts-expect-error Location coordinates must be numbers.
+    assertType<ResponseError["locations"]>([{ line: 1, column: "1" }]);
+  });
+});
