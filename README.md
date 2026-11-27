@@ -166,7 +166,7 @@ const { repository } = await graphql(
 ### Pass query together with headers and variables
 
 ```js
-import { graphql } from("@octokit/graphql");
+import { graphql } from "@octokit/graphql";
 const { repository } = await graphql({
   query: `query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
     repository(owner: $owner, name: $repo) {
@@ -191,13 +191,13 @@ const { repository } = await graphql({
 
 ```js
 import { graphql } from "@octokit/graphql";
-graphql = graphql.defaults({
+const graphqlWithAuth = graphql.defaults({
   baseUrl: "https://github-enterprise.acme-inc.com/api",
   headers: {
     authorization: `token secret123`,
   },
 });
-const { repository } = await graphql(`
+const { repository } = await graphqlWithAuth(`
   {
     repository(owner: "acme-project", name: "acme-repo") {
       issues(last: 3) {
@@ -267,7 +267,7 @@ All errors can be accessed at `error.errors`. `error.request` has the request op
 
 ```js
 import { graphql, GraphqlResponseError } from "@octokit/graphql";
-graphql = graphql.defaults({
+const graphqlWithAuth = graphql.defaults({
   headers: {
     authorization: `token secret123`,
   },
@@ -279,7 +279,7 @@ const query = `{
 }`;
 
 try {
-  const result = await graphql(query);
+  const result = await graphqlWithAuth(query);
 } catch (error) {
   if (error instanceof GraphqlResponseError) {
     // do something with the error, allowing you to detect a graphql response error,
@@ -314,7 +314,7 @@ A GraphQL query may respond with partial data accompanied by errors. In this cas
 
 ```js
 import { graphql } from "@octokit/graphql";
-graphql = graphql.defaults({
+const graphqlWithAuth = graphql.defaults({
   headers: {
     authorization: `token secret123`,
   },
@@ -337,7 +337,7 @@ const query = `{
 }`;
 
 try {
-  const result = await graphql(query);
+  const result = await graphqlWithAuth(query);
 } catch (error) {
   // server responds with
   // {
