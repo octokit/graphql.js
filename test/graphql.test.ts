@@ -13,6 +13,33 @@ describe("graphql()", () => {
     expect(graphql).toBeInstanceOf(Function);
   });
 
+  it.each(["separate", "combined"])(
+    "preserves __proto__ variables with %s query options",
+    async (form) => {
+      const query =
+        "query($__proto__: String!, $name: String!) { repository(owner: $__proto__, name: $name) { name } }";
+      const variables = { ["__proto__"]: "octokit", name: "graphql.js" };
+      const data = { repository: { name: "graphql.js" } };
+      const mock = fetchMock
+        .createInstance()
+        .post("https://api.github.com/graphql", { data });
+      const client = graphql.defaults({
+        request: { fetch: mock.fetchHandler },
+      });
+
+      const result =
+        form === "separate"
+          ? await client(query, variables)
+          : await client({ query, ...variables });
+
+      expect(result).toStrictEqual(data);
+      expect(mock.callHistory.calls()).toHaveLength(1);
+      expect(
+        JSON.parse(mock.callHistory.calls()[0].options.body as string),
+      ).toStrictEqual({ query, variables });
+    },
+  );
+
   it("README simple query example", () => {
     const mockData = {
       repository: {

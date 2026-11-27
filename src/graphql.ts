@@ -47,7 +47,7 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
   }
 
   const parsedOptions =
-    typeof query === "string" ? Object.assign({ query }, options) : query;
+    typeof query === "string" ? { query, ...options } : query;
 
   const requestOptions = Object.keys(
     parsedOptions,
@@ -61,7 +61,12 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
       result.variables = {};
     }
 
-    result.variables[key] = parsedOptions[key];
+    Object.defineProperty(result.variables, key, {
+      value: parsedOptions[key],
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    });
     return result;
   }, {} as GraphQlEndpointOptions);
 
