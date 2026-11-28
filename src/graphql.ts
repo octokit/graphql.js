@@ -73,6 +73,13 @@ export function graphql<ResponseData = GraphQlQueryResponseData>(
   }
 
   return request(requestOptions).then((response) => {
+    const signal =
+      requestOptions.request?.signal ??
+      request.endpoint.DEFAULTS.request?.signal;
+    if (signal?.aborted) {
+      throw signal.reason;
+    }
+
     if (response.data.errors) {
       const headers: ResponseHeaders = {};
       for (const key of Object.keys(response.headers)) {
