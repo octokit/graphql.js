@@ -159,6 +159,55 @@ describe("graphql.defaults()", () => {
     }`);
   });
 
+  it.each([
+    {
+      defaultBaseUrl: "https://api.github.com",
+      overrideBaseUrl: "https://github.acme-inc.com/api/v3/",
+      defaultUrl: "https://api.github.com/graphql",
+      overrideUrl: "https://github.acme-inc.com/api/graphql",
+    },
+    {
+      defaultBaseUrl: "https://github.acme-inc.com/api/v3",
+      overrideBaseUrl: "https://github.example.com/api/v3/",
+      defaultUrl: "https://github.acme-inc.com/api/graphql",
+      overrideUrl: "https://github.example.com/api/graphql",
+    },
+    {
+      defaultBaseUrl: "https://github.acme-inc.com/api/v3/",
+      overrideBaseUrl: "https://api.github.com",
+      defaultUrl: "https://github.acme-inc.com/api/graphql",
+      overrideUrl: "https://api.github.com/graphql",
+    },
+  ])(
+    "overrides $defaultBaseUrl with $overrideBaseUrl for one call",
+    async ({ defaultBaseUrl, overrideBaseUrl, defaultUrl, overrideUrl }) => {
+      const defaultData = { viewer: { login: "default-host" } };
+      const overrideData = { viewer: { login: "override-host" } };
+      const mock = fetchMock
+        .createInstance()
+        .post(defaultUrl, { data: defaultData })
+        .post(overrideUrl, { data: overrideData });
+      const query = "query { viewer { login } }";
+      const graphqlWithDefaults = graphql.defaults({
+        baseUrl: defaultBaseUrl,
+        request: { fetch: mock.fetchHandler },
+      });
+
+      await expect(graphqlWithDefaults(query)).resolves.toStrictEqual(
+        defaultData,
+      );
+      await expect(
+        graphqlWithDefaults(query, { baseUrl: overrideBaseUrl }),
+      ).resolves.toStrictEqual(overrideData);
+      await expect(graphqlWithDefaults(query)).resolves.toStrictEqual(
+        defaultData,
+      );
+      expect(graphqlWithDefaults.endpoint.DEFAULTS.baseUrl).toBe(
+        defaultBaseUrl,
+      );
+    },
+  );
+
   it("set defaults on .endpoint", () => {
     const mockData = {
       repository: {
